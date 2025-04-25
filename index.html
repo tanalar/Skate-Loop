@@ -1,319 +1,127 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity Web Player | Skate Loop</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://unpkg.com/@tonconnect/ui@2.1.0/dist/tonconnect-ui.min.js"></script>
-
-    <style>
-        #unity-canvas {
-            width: 100%;
-            height: 100%;
-            background: #231F20;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: #000;
-        }
-
-        #leaderboard-frame {
-            z-index: 150;
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            pointer-events: auto;
-        }
-
-        #referral-frame {
-            z-index: 150;
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            pointer-events: auto;
-        }
-
-        @media (orientation: landscape) {
-            body::before {
-                content: "Поверните устройство вертикально!";
-                background: rgba(0,0,0,0.9);
-                color: white;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 9999;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 24px;
-                font-weight: bold;
-                text-align: center;
-                padding: 20px;
-                line-height: 1.5;
-            }
-        }
-    </style>
-
-</head>
-<body>
+  </head>
+  <body>
     <div id="unity-container" class="unity-desktop">
-        <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-
-        <div id="user-avatar-wrapper"
-             style="position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 1000;
-        display: none;">
-            <img id="user-avatar"
-                 style="width: 35px;
-            height: 35px;
-            border-radius: 10px;
-            border: 2px solid white;">
+      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
         </div>
-
-        <iframe id="leaderboard-frame"
-                src="leaderboard.html"
-                allow="cross-origin-isolated">
-        </iframe>
-
-        <iframe id="referral-frame"
-                src="referrals.html"
-                allow="cross-origin-isolated">
-        </iframe>
-
-        <div id="unity-loading-bar">
-            <div id="unity-logo"></div>
-            <div id="unity-progress-bar-empty">
-                <div id="unity-progress-bar-full"></div>
-            </div>
-        </div>
-        <div id="unity-warning"> </div>
-        <div id="unity-footer">
-            <div id="unity-logo-title-footer"></div>
-            <div id="unity-fullscreen-button"></div>
-            <div id="unity-build-title">Skate Loop</div>
-        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">Skate Loop</div>
+      </div>
     </div>
-
     <script>
-        window.showLeaderboard = function () {
-            const frame = document.getElementById('leaderboard-frame');
-            frame.style.display = 'block';
-            frame.contentWindow.postMessage({
-                type: 'showLeaderboard'
-            }, window.location.origin);
+      var canvas = document.querySelector("#unity-canvas");
 
-            if (typeof Telegram !== 'undefined') {
-                Telegram.WebApp.BackButton.show();
-                Telegram.WebApp.BackButton.onClick(() => {
-                    window.hideLeaderboard();
-                });
-            }
-        };
-
-        window.hideLeaderboard = function () {
-            const frame = document.getElementById('leaderboard-frame');
-            frame.contentWindow.postMessage({
-                type: 'hideLeaderboard'
-            }, window.location.origin);
-            frame.style.display = 'none';
-
-            if (typeof Telegram !== 'undefined') {
-                Telegram.WebApp.BackButton.hide();
-            }
-        };
-
-        window.sendLeaderboardData = function (data) {
-            const frame = document.getElementById('leaderboard-frame');
-            if (frame?.contentWindow) {
-                frame.contentWindow.postMessage({
-                    type: 'leaderboard',
-                    data: data
-                }, window.location.origin);
-            }
-        };
-
-        window.sendLeaderboardDataTab = function (tab, data) {
-            const frame = document.getElementById('leaderboard-frame');
-            if (frame?.contentWindow) {
-                frame.contentWindow.postMessage({
-                    type: 'leaderboard',
-                    tab: tab,
-                    data: data
-                }, window.location.origin);
-            }
-        };
-
-    </script>
-    <script>
-        window.showReferrals = function () {
-            const frame = document.getElementById('referral-frame');
-            frame.style.display = 'block';
-            frame.contentWindow.postMessage({
-                type: 'showReferrals'
-            }, window.location.origin);
-
-            if (typeof Telegram !== 'undefined') {
-                Telegram.WebApp.BackButton.show();
-                Telegram.WebApp.BackButton.onClick(() => {
-                    window.hideReferrals();
-                });
-            }
-        };
-
-        window.hideReferrals = function () {
-            const frame = document.getElementById('referral-frame');
-            frame.contentWindow.postMessage({
-                type: 'hideReferrals'
-            }, window.location.origin);
-            frame.style.display = 'none';
-
-            if (typeof Telegram !== 'undefined') {
-                Telegram.WebApp.BackButton.hide();
-            }
-        };
-
-        window.sendReferralsData = function (data) {
-            const frame = document.getElementById('referral-frame');
-            if (data) {
-                frame.contentWindow.postMessage({
-                    type: 'referralData',
-                    levels: data.levels || [],
-                    referrals: data.referrals || [],
-                    link: data.link || '',
-                    message: data.message || ''
-                }, window.location.origin);
-            }
-        };
-
-        window.updateReferralBalance = function (data) {
-            const frame = document.getElementById('referral-frame');
-            if (data) {
-                frame.contentWindow.postMessage({
-                    type: 'updateBalanceData',
-                    data: data
-                }, window.location.origin);
-            }
-        };
-    </script>
-
-    <script>
-        var canvas = document.querySelector("#unity-canvas");
-        function unityShowBanner(msg, type) {
-            var warningBanner = document.querySelector("#unity-warning");
-            function updateBannerVisibility() {
-                warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-            }
-            var div = document.createElement('div');
-            div.innerHTML = msg;
-            warningBanner.appendChild(div);
-            if (type == 'error') div.style = 'background: red; padding: 10px;';
-            else {
-                if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-                setTimeout(function () {
-                    warningBanner.removeChild(div);
-                    updateBannerVisibility();
-                }, 5000);
-            }
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector("#unity-warning");
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
             updateBannerVisibility();
+          }, 5000);
         }
+        updateBannerVisibility();
+      }
 
-        var buildUrl = "Build";
-        var loaderUrl = buildUrl + "/0.01.loader.js";
-        var config = {
-            arguments: [],
-            dataUrl: buildUrl + "/0.01.data",
-            frameworkUrl: buildUrl + "/0.01.framework.js",
-            codeUrl: buildUrl + "/0.01.wasm",
-            streamingAssetsUrl: "StreamingAssets",
-            companyName: "Serper",
-            productName: "Skate Loop",
-            productVersion: "1.07",
-            showBanner: unityShowBanner,
-        };
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/Skate-Loop.loader.js";
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/Skate-Loop.data",
+        frameworkUrl: buildUrl + "/Skate-Loop.framework.js",
+        codeUrl: buildUrl + "/Skate-Loop.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Serper",
+        productName: "Skate Loop",
+        productVersion: "2.09",
+        showBanner: unityShowBanner,
+      };
 
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      // By default, Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
 
-            var meta = document.createElement('meta');
-            meta.name = 'viewport';
-            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, viewport-fit=cover';
-            document.getElementsByTagName('head')[0].appendChild(meta);
-            document.querySelector("#unity-container").className = "unity-mobile";
-            canvas.className = "unity-mobile";
+      // If you would like all file writes inside Unity Application.persistentDataPath
+      // directory to automatically persist so that the contents are remembered when
+      // the user revisits the site the next time, uncomment the following line:
+      // config.autoSyncPersistentDataPath = true;
+      // This autosyncing is currently not the default behavior to avoid regressing
+      // existing user projects that might rely on the earlier manual
+      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
+      // expected to change.
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        document.querySelector("#unity-container").className = "unity-mobile";
+        canvas.className = "unity-mobile";
+
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
 
 
-        } else {
-            canvas.style.width = "960px";
-            canvas.style.height = "600px";
-        }
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        canvas.style.width = "960px";
+        canvas.style.height = "600px";
+      }
 
-        document.querySelector("#unity-loading-bar").style.display = "block";
+      document.querySelector("#unity-loading-bar").style.display = "block";
 
-        function resizeCanvas() {
-            const canvas = document.getElementById('unity-canvas');
-            if (!canvas) return;
-
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        var script = document.createElement("script");
-        script.src = loaderUrl;
-        script.onload = () => {
-            createUnityInstance(canvas, config, (progress) => {
-                document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-            }).then((unityInstance) => {
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+              }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
-                    unityInstance.SetFullscreen(1);
+                  unityInstance.SetFullscreen(1);
                 };
 
-            }).then((instance) => {
-                window.unityInstance = instance;
-                resizeCanvas();
-                if (typeof Telegram !== 'undefined') {
-                    Telegram.WebApp.ready();
-                    Telegram.WebApp.expand();
-                    Telegram.WebApp.setHeaderColor("#110b31");
-                }
-            })
-                .catch((error) => {
-                    console.error("Unity initialization failed:", error);
-                });
-        };
+              }).catch((message) => {
+                alert(message);
+              });
+            };
 
-        document.body.appendChild(script);
-
-        window.addEventListener('resize', resizeCanvas);
-
-        document.addEventListener("visibilitychange", () => {
-            if (!document.hidden && window.unityInstance) {
-                window.unityInstance.SendMessage("WebAppHandler", "AppResumeHandler");
-            }
-        });
+      document.body.appendChild(script);
 
     </script>
-</body>
+  </body>
 </html>
