@@ -323,9 +323,9 @@
 
         document.getElementById('copy-button').addEventListener('click', () => {
             if (!referralLink) return;
-            //navigator.clipboard.writeText(referralLink);
+            navigator.clipboard.writeText(referralLink);
             window.parent.Telegram.WebApp.showAlert("Реферальная ссылка успешно скопирована!");
-            navigator.clipboard.writeText(window.parent.Telegram.WebApp.initData);
+            //navigator.clipboard.writeText(window.parent.Telegram.WebApp.initData);
         });
 
         document.getElementById('claim-button').addEventListener('click', () => {
