@@ -323,8 +323,8 @@
 
         document.getElementById('copy-button').addEventListener('click', () => {
             if (!referralLink) return;
-            //navigator.clipboard.writeText(referralLink);
-            navigator.clipboard.writeText(window.parent.Telegram.WebApp.initData);
+            navigator.clipboard.writeText(referralLink);
+            //navigator.clipboard.writeText(window.parent.Telegram.WebApp.initData);
             window.parent.Telegram.WebApp.showAlert("Реферальная ссылка успешно скопирована!");
         });
 
