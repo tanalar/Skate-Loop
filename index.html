@@ -65,7 +65,7 @@
     <canvas id="unity-canvas" tabindex="-1"></canvas>
 
     <div id="user-avatar-wrapper" style="position: fixed; top: 12px; left: 12px; z-index: 1000; display: none;">
-        <img id="user-avatar" style="width: 48px; height: 48px; border-radius: 10px;"> <!-- border: 2px solid white;-->
+        <img id="user-avatar" style="width: 48px; height: 48px; border-radius: 10px; opacity: 0.5;"> <!-- border: 2px solid white;-->
     </div>
 
     <iframe id="leaderboard-frame" src="leaderboard.html" allow="cross-origin-isolated"></iframe>
@@ -76,8 +76,8 @@
             const frame = document.getElementById('leaderboard-frame');
             frame.style.display = 'block';
             frame.contentWindow.postMessage({ type: 'showLeaderboard' }, window.location.origin);
-            //Telegram?.WebApp?.BackButton?.show();
-            //Telegram?.WebApp?.BackButton?.onClick(window.hideLeaderboard);
+            Telegram?.WebApp?.BackButton?.show();
+            Telegram?.WebApp?.BackButton?.onClick(window.hideLeaderboard);
         };
 
         window.hideLeaderboard = function () {
@@ -106,8 +106,8 @@
             const frame = document.getElementById('referral-frame');
             frame.style.display = 'block';
             frame.contentWindow.postMessage({ type: 'showReferrals' }, window.location.origin);
-            //Telegram?.WebApp?.BackButton?.show();
-            //Telegram?.WebApp?.BackButton?.onClick(window.hideReferrals);
+            Telegram?.WebApp?.BackButton?.show();
+            Telegram?.WebApp?.BackButton?.onClick(window.hideReferrals);
         };
 
         window.hideReferrals = function () {
