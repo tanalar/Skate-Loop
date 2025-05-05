@@ -176,7 +176,7 @@
         let isLoading = false;
 
         window.addEventListener('message', (event) => {
-            if (event.origin !== window.location.origin) return;
+            <!--if (event.origin !== window.location.origin) return;-->
 
             const { type, tab, data } = event.data;
 
@@ -200,15 +200,7 @@
                         if (tab === currentTab) {
                             renderPlayers(data);
                         }
-                    } else if (typeof data === 'object' && data !== null) {
-                        for (const key in data) {
-                            if (leaderboardData.hasOwnProperty(key)) {
-                                leaderboardData[key] = data[key];
-                                loadedTabs.add(key);
-                            }
-                        }
-                        renderPlayers(leaderboardData[currentTab]);
-                    }
+                    } 
                     break;
             }
         });
