@@ -284,7 +284,9 @@
                     isLoading = true;
                     document.getElementById('loading-indicator').style.display = 'block';
 
-                    window.parent.focus();
+                    const unityCanvas = window.parent.document.querySelector('#unity-canvas');
+                    if (unityCanvas) unityCanvas.focus();
+
 
                     if (window.parent.unityInstance) {
                         window.parent.unityInstance.SendMessage("WebAppHandler", "LoadLeaderboardTab", currentTab);
