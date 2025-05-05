@@ -183,22 +183,6 @@
             switch (type) {
                 case 'showLeaderboard':
                     document.getElementById('leaderboard-container').classList.add('visible');
-
-                    if (!loadedTabs.has(currentTab)) {
-                        isLoading = true;
-                        document.getElementById('loading-indicator').style.display = 'block';
-
-                        if (window.parent.unityInstance) {
-                            window.parent.unityInstance.SendMessage("WebAppHandler", "LoadLeaderboardTab", currentTab);
-                        }
-
-                        setTimeout(() => {
-                            if (isLoading) {
-                                isLoading = false;
-                                document.getElementById('loading-indicator').style.display = 'none';
-                            }
-                        }, 10000);
-                    }
                     break;
 
                 case 'hideLeaderboard':
