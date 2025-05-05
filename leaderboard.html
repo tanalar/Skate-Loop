@@ -197,12 +197,10 @@
                     if (tab) {
                         leaderboardData[tab] = data;
                         loadedTabs.add(tab);
-                        if (tab === currentTab) {
-                            renderPlayers(data);
-                        }else {
+                        
                             currentTab = tab;
                             renderPlayers(data);
-                        }
+                        
                     } else if (typeof data === 'object' && data !== null) {
                         for (const key in data) {
                             if (leaderboardData.hasOwnProperty(key)) {
