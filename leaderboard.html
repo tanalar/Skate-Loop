@@ -193,7 +193,6 @@
                 case 'leaderboard':
                     document.getElementById('loading-indicator').style.display = 'none';
                     isLoading = false;
-                    console.log('Получены данные лидерборда:', tab, data);
 
                     if (tab) {
                         leaderboardData[tab] = data;
@@ -281,19 +280,25 @@
                 tab.classList.add('active');
                 currentTab = tabKey;
 
-                isLoading = true;
-                document.getElementById('loading-indicator').style.display = 'block';
+                if (!loadedTabs.has(currentTab)) {
+                    isLoading = true;
+                    document.getElementById('loading-indicator').style.display = 'block';
 
-                if (window.parent.unityInstance) {
-                    window.parent.unityInstance.SendMessage("WebAppHandler", "LoadLeaderboardTab", currentTab);
-                }
+                    window.parent.focus();
 
-                setTimeout(() => {
-                    if (isLoading) {
-                        isLoading = false;
-                        document.getElementById('loading-indicator').style.display = 'none';
+                    if (window.parent.unityInstance) {
+                        window.parent.unityInstance.SendMessage("WebAppHandler", "LoadLeaderboardTab", currentTab);
                     }
-                }, 10000);
+
+                    setTimeout(() => {
+                        if (isLoading) {
+                            isLoading = false;
+                            document.getElementById('loading-indicator').style.display = 'none';
+                        }
+                    }, 10000);
+                } else {
+                    renderPlayers(leaderboardData[currentTab]);
+                }
             });
         });</script>
 </body>
