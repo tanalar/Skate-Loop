@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Лидеры</title>
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom, #1d1151, #3b1b6b);
+            color: white;
+        }
+
+        #leaderboard-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.3s;
+            background: transparent !important;
+        }
+
+            #leaderboard-container.visible {
+                opacity: 1;
+            }
+
+        .tabs {
+            display: flex;
+            background: #27135e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: transparent;
+            color: #bbb;
+            cursor: pointer;
+        }
+
+            .tab.active {
+                background: white;
+                color: #27135e;
+                font-weight: bold;
+            }
+
+        .top-player {
+            background: #342062;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+            .top-player img {
+                width: 100px;
+                height: 100px;
+                border-radius: 12px;
+                object-fit: cover;
+                border: 3px solid white;
+            }
+
+        .top-player-name {
+            margin-top: 8px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .score-line {
+            margin-top: 4px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: 14px;
+            color: #eee;
+        }
+
+        .players-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .player {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+            .player img {
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                object-fit: cover;
+                margin-right: 12px;
+            }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-rank {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #f0c000;
+            font-size: 18px;
+        }
+
+        .player-name {
+            font-weight: 500;
+        }
+
+        .player-score {
+            font-size: 14px;
+            color: #cfc;
+        }
+
+        #loading-indicator {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="leaderboard-container">
+        <div class="tabs">
+            <div class="tab" data-tab="balance">Деньги</div>
+            <div class="tab active" data-tab="stars">Общий</div>
+            <div class="tab" data-tab="record">Рекорды</div>
+        </div>
+
+        <div class="top-player" id="top-player">
+            <img src="" alt="Top Player" />
+            <div class="top-player-name">Имя</div>
+            <div class="score-line">
+                <div>⭐ 0</div>
+                <div>🏆 0</div>
+            </div>
+        </div>
+
+        <div class="players-list" id="players-list"></div>
+        <div id="loading-indicator"><div class="spinner"></div></div>
+    </div>
+
+    <script>const leaderboardData = { balance: [], stars: [], record: [] };
+        let currentTab = 'stars';
+        const loadedTabs = new Set();
+        let isLoading = false;
+
+        window.addEventListener('message', (event) => {
+            if (event.origin !== window.location.origin) return;
+
+            const { type, tab, data } = event.data;
+
+            switch (type) {
+                case 'showLeaderboard':
+                    document.getElementById('leaderboard-container').classList.add('visible');
+                    break;
+
+                case 'hideLeaderboard':
+                    document.getElementById('leaderboard-container').classList.remove('visible');
+                    loadedTabs.clear();
+                    break;
+
+                case 'leaderboard':
+                    document.getElementById('loading-indicator').style.display = 'none';
+                    isLoading = false;
+
+                    if (tab) {
+                        leaderboardData[tab] = data;
+                        loadedTabs.add(tab);
+                        if (tab === currentTab) {
+                            renderPlayers(data);
+                        }else {
+                            currentTab = tab;
+                            renderPlayers(data);
+                        }
+                    } else if (typeof data === 'object' && data !== null) {
+                        for (const key in data) {
+                            if (leaderboardData.hasOwnProperty(key)) {
+                                leaderboardData[key] = data[key];
+                                loadedTabs.add(key);
+                            }
+                        }
+                        renderPlayers(leaderboardData[currentTab]);
+                    }
+                    break;
+            }
+        });
+
+        function renderPlayers(category) {
+            if (!category || typeof category !== 'object') return;
+
+            const container = document.getElementById('top-player');
+            container.querySelector('img').src = category.img || 'default-avatar.jpg';
+            container.querySelector('.top-player-name').textContent = category.name || 'Игрок';
+            container.querySelector('.score-line').innerHTML = `
+                    <div>${currentTab === 'balance' ? '💵' : '⭐'} ${category.score || 0}</div>
+                    <div>🏆 ${category.place || 0}</div>`;
+
+            const playersList = document.getElementById('players-list');
+            playersList.innerHTML = '';
+
+            const safeData = Array.isArray(category.items) ? category.items : [];
+
+            if (safeData.length === 0) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.style.textAlign = 'center';
+                emptyDiv.style.color = '#ccc';
+                emptyDiv.style.marginTop = '20px';
+                emptyDiv.textContent = 'Нет игроков';
+                playersList.appendChild(emptyDiv);
+                return;
+            }
+
+            safeData.forEach((player, index) => {
+                const div = document.createElement('div');
+                div.className = 'player';
+
+                const img = document.createElement('img');
+                img.src = player.img || 'default-avatar.jpg';
+
+                const rank = document.createElement('div');
+                rank.className = 'player-rank';
+                rank.textContent = index + 1;
+
+                const info = document.createElement('div');
+                info.className = 'player-info';
+
+                const name = document.createElement('div');
+                name.className = 'player-name';
+                name.textContent = player.name || 'Игрок';
+
+                const score = document.createElement('div');
+                score.className = 'player-score';
+                score.textContent = `${currentTab === 'balance' ? '💵' : '⭐'} ${player.score || 0}`;
+
+                info.appendChild(name);
+                info.appendChild(score);
+
+                div.appendChild(rank);
+                div.appendChild(img);
+                div.appendChild(info);
+
+                playersList.appendChild(div);
+            });
+        }
+
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabKey = tab.dataset.tab;
+                if (isLoading || tabKey === currentTab) return;
+
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentTab = tabKey;
+
+                if (!loadedTabs.has(currentTab)) {
+                    isLoading = true;
+                    document.getElementById('loading-indicator').style.display = 'block';
+
+                    if (window.parent.unityInstance) {
+                        window.parent.unityInstance.SendMessage("WebAppHandler", "LoadLeaderboardTab", currentTab);
+                    }
+
+                    setTimeout(() => {
+                        if (isLoading) {
+                            isLoading = false;
+                            document.getElementById('loading-indicator').style.display = 'none';
+                        }
+                    }, 10000);
+                } else {
+                    renderPlayers(leaderboardData[currentTab]);
+                }
+            });
+        });</script>
+</body>
+</html>
