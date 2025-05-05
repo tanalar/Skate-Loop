@@ -176,7 +176,7 @@
         let isLoading = false;
 
         window.addEventListener('message', (event) => {
-            <!--if (event.origin !== window.location.origin) return;-->
+            if (event.origin !== window.location.origin) return;
 
             const { type, tab, data } = event.data;
 
@@ -193,13 +193,12 @@
                 case 'leaderboard':
                     document.getElementById('loading-indicator').style.display = 'none';
                     isLoading = false;
-
+                    console.log('Получены данные лидерборда:', tab, data);
                     if (tab) {
                         leaderboardData[tab] = data;
                         loadedTabs.add(tab);
-                        if (tab === currentTab) {
-                            renderPlayers(data);
-                        }
+                        renderPlayers(data);
+                       
                     } 
                     break;
             }
@@ -277,7 +276,7 @@
                     document.getElementById('loading-indicator').style.display = 'block';
 
                     if (window.parent.unityInstance) {
-                        window.parent.unityInstance.SendMessage("WebAppHandler", "LoadLeaderboardTab", currentTab);
+                        window.parent.unityInstance.SendMessage("WebAppHandler", "LoadLeaderboardTab", tabKey);
                     }
 
                     setTimeout(() => {
