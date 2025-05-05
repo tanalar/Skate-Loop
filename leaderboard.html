@@ -194,12 +194,22 @@
                     document.getElementById('loading-indicator').style.display = 'none';
                     isLoading = false;
                     console.log('Получены данные лидерборда:', tab, data);
+
                     if (tab) {
                         leaderboardData[tab] = data;
                         loadedTabs.add(tab);
-                        renderPlayers(data);
-                       
-                    } 
+                        if (tab === currentTab) {
+                            renderPlayers(data);
+                        }
+                    } else if (typeof data === 'object' && data !== null) {
+                        for (const key in data) {
+                            if (leaderboardData.hasOwnProperty(key)) {
+                                leaderboardData[key] = data[key];
+                                loadedTabs.add(key);
+                            }
+                        }
+                        renderPlayers(leaderboardData[currentTab]);
+                    }
                     break;
             }
         });
@@ -271,23 +281,19 @@
                 tab.classList.add('active');
                 currentTab = tabKey;
 
-                if (!loadedTabs.has(currentTab)) {
-                    isLoading = true;
-                    document.getElementById('loading-indicator').style.display = 'block';
+                isLoading = true;
+                document.getElementById('loading-indicator').style.display = 'block';
 
-                    if (window.parent.unityInstance) {
-                        window.parent.unityInstance.SendMessage("WebAppHandler", "LoadLeaderboardTab", tabKey);
-                    }
-
-                    setTimeout(() => {
-                        if (isLoading) {
-                            isLoading = false;
-                            document.getElementById('loading-indicator').style.display = 'none';
-                        }
-                    }, 10000);
-                } else {
-                    renderPlayers(leaderboardData[currentTab]);
+                if (window.parent.unityInstance) {
+                    window.parent.unityInstance.SendMessage("WebAppHandler", "LoadLeaderboardTab", currentTab);
                 }
+
+                setTimeout(() => {
+                    if (isLoading) {
+                        isLoading = false;
+                        document.getElementById('loading-indicator').style.display = 'none';
+                    }
+                }, 10000);
             });
         });</script>
 </body>
