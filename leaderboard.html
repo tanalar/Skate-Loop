@@ -221,8 +221,8 @@
             container.querySelector('img').src = category.img || 'default-avatar.jpg';
             container.querySelector('.top-player-name').textContent = category.name || 'Игрок';
             const icon = currentTab === 'balance'
-                ? '<img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:20px; height:20px; vertical-align:middle; padding-bottom:1px; border: none;" />'
-                : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:20px; height:20px; vertical-align:middle; padding-bottom:1px; border: none;" />';
+                ? '<img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:20px; height:20px; vertical-align:middle; padding-bottom:2px; border: none;" />'
+                : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:20px; height:20px; vertical-align:middle; padding-bottom:2px; border: none;" />';
             container.querySelector('.score-line').innerHTML = `
                     <div>${icon} <a style="padding-top: 4px; display: inline-block;">${category.score || 0}</a></div>
                     <div>🏆 ${category.place || 0}</div>`;
