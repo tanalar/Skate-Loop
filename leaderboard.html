@@ -171,7 +171,7 @@
     </div>
 
     <script>
-        const leaderboardData = { balance: [], stars: [], record: [] };
+    const leaderboardData = { balance: [], stars: [], record: [] };
         let currentTab = 'stars';
         const loadedTabs = new Set();
         let isLoading = false;
@@ -221,11 +221,11 @@
             container.querySelector('img').src = category.img || 'default-avatar.jpg';
             container.querySelector('.top-player-name').textContent = category.name || 'Игрок';
             const icon = currentTab === 'balance'
-                ? '<img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:14px; height:14px; vertical-align:middle; border: none;" />'
-                : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:14px; height:14px; vertical-align:middle; border: none;" />';
+                ? '<img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:16px; height:16px; vertical-align:middle; border: none;" />'
+                : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:16px; height:16px; vertical-align:middle; border: none;" />';
             container.querySelector('.score-line').innerHTML = `
-                        <div>${icon} ${category.score || 0}</div>
-                        <div>🏆 ${category.place || 0}</div>`;
+                    <div>${icon} ${category.score || 0}</div>
+                    <div>🏆 ${category.place || 0}</div>`;
 
             const playersList = document.getElementById('players-list');
             playersList.innerHTML = '';
