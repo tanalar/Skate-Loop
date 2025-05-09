@@ -75,7 +75,7 @@
         color: white;
         font-family: sans-serif;
     ">
-        <img src="https://i.ibb.co/4wwDDRDX/logo.png" alt="Logo" style="width: 180px; height: auto; margin-bottom: 50px;" />
+        <img src="https://i.ibb.co/4wwDDRDX/logo.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 50px;" />
 
         <div style="position: absolute; bottom: 40px; width: 80%; max-width: 400px;">
             <div style="width: 100%; background: rgba(255, 255, 255, 0.2); height: 14px; border-radius: 7px; overflow: hidden;">
@@ -198,16 +198,16 @@
         script.src = "Build/Skate-Loop.loader.js";
         script.onload = () => {
             createUnityInstance(canvas, config, (progress) => {
+                Telegram?.WebApp?.setHeaderColor?.("#110b31");
                 const percent = Math.round(progress * 100);
                 document.getElementById("progress-bar").style.width = `${percent}%`;
-                document.getElementById("progress-text").innerText = `${percent}%`;
+                document.getElementById("progress-text").innerText = `Загрузка ${percent}%`;
             }).then((unityInstance) => {
                 window.unityInstance = unityInstance;
                 resizeCanvas();
                 document.getElementById("loading-screen").style.display = "none";
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
-                Telegram?.WebApp?.setHeaderColor?.("#110b31");
             }).catch((error) => {
                 console.error("Unity initialization failed:", error);
             });
