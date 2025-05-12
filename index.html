@@ -62,6 +62,29 @@
     </style>
 </head>
 <body>
+    <div id="loading-screen" style="
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background: linear-gradient(to bottom, #1d1151, #3b1b6b);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        color: white;
+        font-family: sans-serif;
+    ">
+        <img src="https://i.ibb.co/qY24Kf52/logo2.png" alt="Logo" style="width: 250px; height: auto; margin-bottom: 50px;" />
+
+        <div style="position: absolute; bottom: 40px; width: 80%; max-width: 400px;">
+            <div style="width: 100%; background: rgba(255, 255, 255, 0.2); height: 14px; border-radius: 7px; overflow: hidden;">
+                <div id="progress-bar" style="height: 100%; width: 0%; background: #fff; transition: width 0.2s;"></div>
+            </div>
+            <div id="progress-text" style="text-align: center; margin-top: 10px;">0%</div>
+        </div>
+    </div>
+
     <canvas id="unity-canvas" tabindex="-1"></canvas>
 
     <div id="user-avatar-wrapper" style="position: fixed; top: 1.5vh; left: 2vw; z-index: 1000; display: none;">
@@ -175,13 +198,16 @@
         script.src = "Build/Skate-Loop.loader.js";
         script.onload = () => {
             createUnityInstance(canvas, config, (progress) => {
-                // You can show loading progress here
+                Telegram?.WebApp?.setHeaderColor?.("#110b31");
+                const percent = Math.round(progress * 100);
+                document.getElementById("progress-bar").style.width = `${percent}%`;
+                document.getElementById("progress-text").innerText = `Загрузка ${percent}%`;
             }).then((unityInstance) => {
                 window.unityInstance = unityInstance;
                 resizeCanvas();
+                document.getElementById("loading-screen").style.display = "none";
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
-                Telegram?.WebApp?.setHeaderColor?.("#110b31");
             }).catch((error) => {
                 console.error("Unity initialization failed:", error);
             });
