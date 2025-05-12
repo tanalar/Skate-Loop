@@ -224,7 +224,7 @@
                 ? '<img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:20px; height:20px; vertical-align:middle; padding-bottom:2px; border: none;" />'
                 : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:20px; height:20px; vertical-align:middle; padding-bottom:2px; border: none;" />';
             container.querySelector('.score-line').innerHTML = `
-                    <div>${icon} <a style="padding-top: 4px; display: inline-block;">${category.score || 0}</a></div>
+                    <div>${icon} <a style="padding-top: 4px; display: inline-block;">${category.score.toFixed(2) || 0}</a></div>
                     <div>🏆 ${category.place || 0}</div>`;
 
             const playersList = document.getElementById('players-list');
@@ -265,7 +265,7 @@
                 const scoreIcon = currentTab === 'balance'
                     ? '<img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:14px; height:14px; vertical-align:middle; border: none;" />'
                     : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:14px; height:14px; vertical-align:middle; border: none;" />';
-                score.innerHTML = `${scoreIcon}<span style="margin-left:-7px; padding-top:2px;">${player.score || 0}</span>`;
+                score.innerHTML = `${scoreIcon}<span style="margin-left:-7px; padding-top:2px;">${player.score.toFixed(2) || 0}</span>`;
 
                 info.appendChild(name);
                 info.appendChild(score);
