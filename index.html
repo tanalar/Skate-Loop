@@ -166,7 +166,7 @@
 
     <script>
         window.showInterstitial = function () {
-            if (window.Adsgram && window.Adsgram.show) {
+            if (window.Adsgram) {
                 window.interstitial.show()
                     .then(() => {
                         window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialClosed");
@@ -180,7 +180,7 @@
         };
 
         window.showRewarded = function (rewardData) {
-            if (window.Adsgram && window.Adsgram.show) {
+            if (window.Adsgram) {
                 window.rewarded.show()
                     .then(() => {
                         const jsonStr = JSON.stringify(rewardData);
