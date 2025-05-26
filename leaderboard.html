@@ -149,13 +149,16 @@
         }
 
         .header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            position: relative;
             margin-bottom: 16px;
+            text-align: center;
+            height: 36px;
         }
 
         .back-button {
+            position: absolute;
+            left: 0;
+            top: 0;
             width: 36px;
             height: 36px;
             border: none;
@@ -165,23 +168,27 @@
             background-repeat: no-repeat;
             background-position: center;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: transform 0.2s, background 0.2s;
         }
 
         .back-button:hover {
-            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.9);
         }
 
         .title {
+            margin: 0;
             font-size: 24px;
             font-weight: bold;
+            line-height: 36px;
         }
+
     </style>
 </head>
 <body>
     <div id="leaderboard-container">
         <div class="header">
-            <button class="back-button" onclick="window.parent.hideLeaderboard()"></button>
+            <button class="back-button" onclick="handleBackClick()"></button>
             <h1 class="title">Лидеры</h1>
         </div>
 
@@ -259,7 +266,7 @@
                 : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:20px; height:20px; vertical-align:middle; padding-bottom:2px; border: none;" />';
             container.querySelector('.score-line').innerHTML = `
                         <div>${icon} <a style="padding-top: 4px; display: inline-block;">${currentTab === 'balance' ? category.score.toFixed(2) : category.score || 0}</a></div>
-                        <div><a style="padding-top: 4px; display: inline-block;">🏆</a> ${category.place || 0}</div>`;
+                        <div>🏆 ${category.place || 0}</div>`;
 
             const playersList = document.getElementById('players-list');
             playersList.innerHTML = '';
@@ -310,6 +317,14 @@
 
                 playersList.appendChild(div);
             });
+        }
+
+        function handleBackClick() {
+            if (window.parent.Telegram && window.parent.Telegram.WebApp.HapticFeedback) {
+                window.parent.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            }
+
+            window.parent.hideLeaderboard();
         }
 
         document.querySelectorAll('.tab').forEach(tab => {
