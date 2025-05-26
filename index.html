@@ -365,9 +365,7 @@
             let progressText = `Загрузка ${Math.floor(fakeProgress)}%`;
             
             if (fakeProgress >= FAST_INCREMENT_MAX && !isUnityLoaded) {
-                progressText = "Завершаем...";
-            } else if (isUnityLoaded) {
-                progressText = "Готово!";
+                progressText = "Подождите еще немного...";
             }
             
             document.getElementById("progress-text").innerText = progressText;
