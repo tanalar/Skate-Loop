@@ -108,6 +108,8 @@
             frame.contentWindow.postMessage({ type: 'hideLeaderboard' }, window.location.origin);
             frame.style.display = 'none';
             Telegram?.WebApp?.BackButton?.hide();
+            const avatar = document.getElementById('user-avatar-wrapper');
+            if (avatar) avatar.style.display = 'block';
         };
 
         window.sendLeaderboardData = function (data) {
@@ -138,6 +140,8 @@
             frame.contentWindow.postMessage({ type: 'hideReferrals' }, window.location.origin);
             frame.style.display = 'none';
             Telegram?.WebApp?.BackButton?.hide();
+            const avatar = document.getElementById('user-avatar-wrapper');
+            if (avatar) avatar.style.display = 'block';
         };
 
         window.sendReferralsData = function (data) {
