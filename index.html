@@ -326,35 +326,42 @@
         let fakeProgress = 0;
         let realProgress = 0;
         let lastSlowIncrementTime = 0;
-        const slowIncrementInterval = 1000; 
+        let isUnityLoaded = false;
+        const SLOW_INCREMENT_INTERVAL = 2000; 
+        const SLOW_INCREMENT_AMOUNT = 1;     
 
         const updateFakeProgress = () => {
             const now = Date.now();
             
-            if (realProgress > fakeProgress) {
+            if (realProgress <= 90) {
                 fakeProgress = realProgress;
             } 
+            else if (!isUnityLoaded) {
+                if (now - lastSlowIncrementTime > SLOW_INCREMENT_INTERVAL) {
+                    fakeProgress = Math.min(fakeProgress + SLOW_INCREMENT_AMOUNT, 99);
+                    lastSlowIncrementTime = now;
+                }
+                
+                if (realProgress > fakeProgress) {
+                    fakeProgress = realProgress;
+                }
+            }
             else {
-                fakeProgress += 0.3 + Math.random() * 0.5; 
+                fakeProgress = 100;
             }
-
-            if (fakeProgress > 89 && now - lastSlowIncrementTime > slowIncrementInterval) {
-                fakeProgress = Math.min(fakeProgress + 0.5, 100);
-                lastSlowIncrementTime = now;
-            }
-
-            if (fakeProgress >= 100) fakeProgress = 100;
 
             document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
-            document.getElementById("progress-text").innerText = `Загрузка ${Math.floor(fakeProgress)}%`;
+            document.getElementById("progress-text").innerText = 
+                fakeProgress < 90 ? `Загрузка ${Math.floor(fakeProgress)}%` :
+                !isUnityLoaded ? `Завершаем... ${Math.floor(fakeProgress)}%` : "Готово!";
 
-            if (fakeProgress < 100) {
+            if (!isUnityLoaded || fakeProgress < 100) {
                 requestAnimationFrame(updateFakeProgress);
+            } else {
+                document.getElementById("loading-screen").style.display = "none";
             }
         };
-
-        updateFakeProgress();
-
+        
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
         script.onload = () => {
@@ -363,6 +370,7 @@
                 realProgress = Math.round(progress * 100);
 
             }).then((unityInstance) => {
+                isUnityLoaded = true;
                 window.unityInstance = unityInstance;
                 resizeCanvas();
                 document.getElementById("loading-screen").style.display = "none";
@@ -377,6 +385,9 @@
                 console.error("Unity initialization failed:", error);
             });
         };
+
+        updateFakeProgress();
+
         document.body.appendChild(script);</script>
 </body>
 </html>
