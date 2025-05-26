@@ -225,45 +225,49 @@
             }
         });
 
-        let unityLoaded = false;
-        let progressPercent = 0;
-        let fakeProgressStarted = false;
-
-        function updateProgressBar(percent) {
-            const progressBar = document.getElementById("progress-bar");
-            const progressText = document.getElementById("progress-text");
-            progressBar.style.width = `${percent}%`;
-            progressText.innerText = `Загрузка ${percent}%`;
-        }
-
-        const progressTimer = setInterval(() => {
-            if (progressPercent < 90) {
-                progressPercent += 1 + Math.random() * 2; 
-            } else if (!unityLoaded && progressPercent < 100) {
-                progressPercent += 1; 
-            }
-
-            updateProgressBar(Math.floor(progressPercent));
-
-            if (progressPercent >= 100) {
-                clearInterval(progressTimer);
-            }
-        }, progressPercent < 90 ? 100 : 2000);
-
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
         script.onload = () => {
-            createUnityInstance(canvas, config, () => {
-            }).then((unityInstance) => {
-                unityLoaded = true;
-                document.getElementById("loading-screen").style.display = "none";
-                window.unityInstance = unityInstance;
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+            let fakeProgress = 0;
+            let realProgress = 0;
+            let isDone = false;
 
+            function updateProgressBar(percent) {
+                document.getElementById("progress-bar").style.width = `${percent}%`;
+                document.getElementById("progress-text").innerText = `Загрузка ${percent}%`;
+            }
+
+            function animateTo100() {
+                if (fakeProgress < 100) {
+                    fakeProgress += 0.5; 
+                    updateProgressBar(Math.round(fakeProgress));
+                    setTimeout(animateTo100, 16);
+                }
+            }
+
+            createUnityInstance(canvas, config, (progress) => {
+                Telegram?.WebApp?.setHeaderColor?.("#110b31");
+                realProgress = Math.round(progress * 100);
+
+                if (realProgress < 90) {
+                    fakeProgress = realProgress;
+                    updateProgressBar(fakeProgress);
+                } else if (!isDone) {
+                    if (fakeProgress < 99) {
+                        fakeProgress += 0.2; 
+                        updateProgressBar(Math.round(fakeProgress));
+                    }
+                }
+            }).then((unityInstance) => {
+                window.unityInstance = unityInstance;
+                isDone = true;
+                fakeProgress = 100;
+                updateProgressBar(100);
+                document.getElementById("loading-screen").style.display = "none";
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
-
+                resizeCanvas();
+                
                 if (window.Adsgram) {
                     window.interstitial = window.Adsgram.init({ blockId: "int-11287" });
                     window.rewarded = window.Adsgram.init({ blockId: "11286" });
@@ -272,7 +276,6 @@
                 console.error("Unity initialization failed:", error);
             });
         };
-
         document.body.appendChild(script);</script>
 </body>
 </html>
