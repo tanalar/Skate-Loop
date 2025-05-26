@@ -7,6 +7,7 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@2.1.0/dist/tonconnect-ui.min.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
     <style>
         #unity-canvas {
@@ -87,15 +88,14 @@
 
     <canvas id="unity-canvas" tabindex="-1"></canvas>
 
-    <div id="user-avatar-wrapper" style="position: fixed; top: 1.5vh; left: 2vw; z-index: 1000; display: none;">
-        <img id="user-avatar" style="width: 46px; height: 46px; border-radius: 10px; border: 2px solid rgba(255, 255, 255, 0);"> <!-- border: 2px solid white;-->
+    <div id="user-avatar-wrapper" style="position: fixed; top: 1.65vh; left: 2.5vw; z-index: 1000; display: none;">
+        <img id="user-avatar" style="width: 45px; height: 45px; border-radius: 10px; border: 2px solid rgba(255, 255, 255, 0);"> <!-- border: 2px solid white;-->
     </div>
 
     <iframe id="leaderboard-frame" src="leaderboard.html" allow="cross-origin-isolated"></iframe>
     <iframe id="referral-frame" src="referrals.html" allow="cross-origin-isolated"></iframe>
 
-    <script>
-        window.showLeaderboard = function () {
+    <script>window.showLeaderboard = function () {
             const frame = document.getElementById('leaderboard-frame');
             frame.style.display = 'block';
             frame.contentWindow.postMessage({ type: 'showLeaderboard' }, window.location.origin);
@@ -155,20 +155,47 @@
                 type: 'updateBalanceData',
                 data: data
             }, window.location.origin);
-        };
-    </script>
+        };</script>
 
-    <script>
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    <script>if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
             const meta = document.createElement('meta');
             meta.name = 'viewport';
             meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
             document.head.appendChild(meta);
-        }
-    </script>
+        }</script>
 
     <script>
-        const canvas = document.querySelector("#unity-canvas");
+        window.showInterstitial = function () {
+            if (window.Adsgram) {
+                window.interstitial.show()
+                    .then(() => {
+                        window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialClosed");
+                    })
+                    .catch((err) => {
+                        window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialFailed", JSON.stringify(err));
+                    });
+            } else {
+                console.warn("Adsgram not initialized");
+            }
+        };
+
+        window.showRewarded = function (rewardData) {
+            if (window.Adsgram) {
+                window.rewarded.show()
+                    .then(() => {
+                        const jsonStr = JSON.stringify(rewardData);
+                        window.unityInstance.SendMessage("WebAppHandler", "HandleRewardCompleted", jsonStr);
+                    })
+                    .catch((err) => {
+                        window.unityInstance.SendMessage("WebAppHandler", "HandleRewardFailed", JSON.stringify(err));
+                    });
+            } else {
+                console.warn("Adsgram not initialized");
+            }
+        };
+    </script>
+
+    <script>const canvas = document.querySelector("#unity-canvas");
         const config = {
             dataUrl: "Build/Skate-Loop.data",
             frameworkUrl: "Build/Skate-Loop.framework.js",
@@ -208,11 +235,15 @@
                 document.getElementById("loading-screen").style.display = "none";
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
+
+                if (window.Adsgram) {
+                    window.interstitial = window.Adsgram.init({ blockId: "int-11287" });
+                    window.rewarded = window.Adsgram.init({ blockId: "11286" });
+                }
             }).catch((error) => {
                 console.error("Unity initialization failed:", error);
             });
         };
-        document.body.appendChild(script);
-    </script>
+        document.body.appendChild(script);</script>
 </body>
 </html>

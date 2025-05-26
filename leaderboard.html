@@ -147,10 +147,44 @@
                 transform: rotate(360deg);
             }
         }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .back-button {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div id="leaderboard-container">
+        <div class="header">
+            <button class="back-button" onclick="window.parent.hideLeaderboard()"></button>
+            <h1 class="title">Лидеры</h1>
+        </div>
+
         <div class="tabs">
             <div class="tab" data-tab="balance">Деньги</div>
             <div class="tab active" data-tab="stars">Общий</div>
@@ -171,7 +205,7 @@
     </div>
 
     <script>
-    const leaderboardData = { balance: [], stars: [], record: [] };
+        const leaderboardData = { balance: [], stars: [], record: [] };
         let currentTab = 'stars';
         const loadedTabs = new Set();
         let isLoading = false;
@@ -224,8 +258,8 @@
                 ? '<img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:20px; height:20px; vertical-align:middle; padding-bottom:2px; border: none;" />'
                 : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:20px; height:20px; vertical-align:middle; padding-bottom:2px; border: none;" />';
             container.querySelector('.score-line').innerHTML = `
-                    <div>${icon} <a style="padding-top: 4px; display: inline-block;">${category.score || 0}</a></div>
-                    <div>🏆 ${category.place || 0}</div>`;
+                        <div>${icon} <a style="padding-top: 4px; display: inline-block;">${currentTab === 'balance' ? category.score.toFixed(2) : category.score || 0}</a></div>
+                        <div><a style="padding-top: 4px; display: inline-block;">🏆</a> ${category.place || 0}</div>`;
 
             const playersList = document.getElementById('players-list');
             playersList.innerHTML = '';
@@ -265,7 +299,7 @@
                 const scoreIcon = currentTab === 'balance'
                     ? '<img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:14px; height:14px; vertical-align:middle; border: none;" />'
                     : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:14px; height:14px; vertical-align:middle; border: none;" />';
-                score.innerHTML = `${scoreIcon}<span style="margin-left:-7px; padding-top:2px;">${player.score || 0}</span>`;
+                score.innerHTML = `${scoreIcon}<span style="margin-left:-7px; padding-top:2px;">${currentTab === 'balance' ? player.score.toFixed(2) : player.score || 0}</span>`;
 
                 info.appendChild(name);
                 info.appendChild(score);
