@@ -324,6 +324,9 @@
                 window.parent.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             }
 
+            const backBtn = document.querySelector('.back-button');
+            if (backBtn) backBtn.blur();
+            
             window.parent.hideLeaderboard();
         }
 

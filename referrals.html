@@ -278,7 +278,7 @@
     <div id="referral-container">
         <div class="header">
             <button class="back-button" onclick="handleBackClick()"></button>
-            <h1 class="title">Лидеры</h1>
+            <h1 class="title">Друзья</h1>
         </div>
 
         <div class="balance-container">
@@ -360,6 +360,9 @@
                 window.parent.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             }
 
+            const backBtn = document.querySelector('.back-button');
+            if (backBtn) backBtn.blur();
+            
             window.parent.hideReferrals();
         }
 
