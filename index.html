@@ -76,44 +76,105 @@
         color: white;
         font-family: sans-serif;
     ">
-      <div id="rules" style="max-width: 400px; font-family: sans-serif; color: white; text-align: left; font-size: 16px; line-height: 1.5;">
-            <div style="margin-bottom: 18px; display: flex; align-items: flex-start;">
-                <div style="flex-shrink: 0; width: 20px; height: 20px; background: linear-gradient(45deg, #a58eff, #7950f2); border-radius: 50%; margin-right: 12px; margin-top: 5px;"></div>
-                <div>
-                    <div style="font-weight: bold;">Собирай звезды и убегай от монстров</div>
-                    <div style="opacity: 0.7; text-align: justify;">Избегай столкновений и собирай как можно больше наград!</div>
-                </div>
-            </div>
-            <div style="margin-bottom: 18px; display: flex; align-items: flex-start;">
-                <div style="flex-shrink: 0; width: 20px; height: 20px; background: linear-gradient(45deg, #a58eff, #7950f2); border-radius: 50%; margin-right: 12px; margin-top: 5px;"></div>
-                <div>
-                    <div style="font-weight: bold;">
-                        Набери 10
-                        <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:16px; height:16px; vertical-align:middle; margin-bottom: 3px;" />
-                        за игру и получи 0,3
-                        <img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:17px; height:17px; vertical-align:middle; margin-bottom: 3px;" />
-                    </div>
-                    <div style="opacity: 0.7; text-align: justify;">Достигни цели за одну игру и получи награду!</div>
-                </div>
-            </div>
-            <div style="margin-bottom: 18px; display: flex; align-items: flex-start;">
-                <div style="flex-shrink: 0; width: 20px; height: 20px; background: linear-gradient(45deg, #a58eff, #7950f2); border-radius: 50%; margin-right: 12px; margin-top: 5px;"></div>
-                <div>
-                    <div style="font-weight: bold;">
-                        Установи мировой рекорд и получи 3
-                        <img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:17px; height:17px; vertical-align:middle; margin-bottom: 3px;" />
-                    </div>
-                    <div style="opacity: 0.7; text-align: justify;">Покажи лучший результат среди всех игроков и получи крупную награду!</div>
-                </div>
-            </div>
-            <div style="margin-bottom: 0; display: flex; align-items: flex-start;">
-                <div style="flex-shrink: 0; width: 20px; height: 20px; background: linear-gradient(45deg, #a58eff, #7950f2); border-radius: 50%; margin-right: 12px; margin-top: 5px;"></div>
-                <div>
-                    <div style="font-weight: bold;">Платим сразу, а не когда-нибудь потом!</div>
-                    <div style="opacity: 0.7; text-align: justify;">Начисление моментально после выполнения условий - без ожиданий.</div>
-                </div>
-            </div>
+      <style>
+    #rules {
+        max-width: 400px;
+        width: 100%;
+        padding: 0 20px;
+        font-family: sans-serif;
+        color: white;
+        /* text-align: justify; */
+        font-size: 16px;
+        line-height: 1.5;
+        box-sizing: border-box;
+        margin: 0 auto;
+    }
+
+    .rule-item {
+        margin-bottom: 18px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .rule-icon {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(45deg, #a58eff, #7950f2);
+        border-radius: 50%;
+        margin-right: 12px;
+        margin-top: 5px;
+    }
+
+    .rule-text div:first-child {
+        font-weight: bold;
+    }
+
+    .rule-text div:last-child {
+        opacity: 0.7;
+    }
+
+    @media (max-width: 480px) {
+        #rules {
+            padding: 0 15px;
+            font-size: 14px;
+        }
+
+        .rule-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+        }
+
+        .rule-text img {
+            width: 14px !important;
+            height: 14px !important;
+        }
+    }
+</style>
+
+<div id="rules">
+    <div class="rule-item">
+        <div class="rule-icon"></div>
+        <div class="rule-text">
+            <div>Собирай звезды и убегай от монстров</div>
+            <div>Избегай столкновений и собирай как можно больше наград!</div>
         </div>
+    </div>
+
+    <div class="rule-item">
+        <div class="rule-icon"></div>
+        <div class="rule-text">
+            <div>
+                Набери 10
+                <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:16px; height:16px; vertical-align:middle; margin-bottom: 3px;" />
+                за игру и получи 0,3
+                <img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:17px; height:17px; vertical-align:middle; margin-bottom: 3px;" />
+            </div>
+            <div>Достигни цели за одну игру и получи награду!</div>
+        </div>
+    </div>
+
+    <div class="rule-item">
+        <div class="rule-icon"></div>
+        <div class="rule-text">
+            <div>
+                Установи мировой рекорд и получи 3
+                <img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:17px; height:17px; vertical-align:middle; margin-bottom: 3px;" />
+            </div>
+            <div>Покажи лучший результат среди всех игроков и получи крупную награду!</div>
+        </div>
+    </div>
+
+    <div class="rule-item" style="margin-bottom: 0;">
+        <div class="rule-icon"></div>
+        <div class="rule-text">
+            <div>Платим сразу, а не когда-нибудь потом!</div>
+            <div>Начисление моментально после выполнения условий - без ожиданий.</div>
+        </div>
+    </div>
+</div>
+
 
         <div style="position: absolute; bottom: 40px; width: 80%; max-width: 400px;">
             <div style="width: 100%; background: rgba(255, 255, 255, 0.2); height: 14px; border-radius: 7px; overflow: hidden;">
