@@ -325,8 +325,12 @@
 
         let fakeProgress = 0;
         let realProgress = 0;
+        let lastSlowIncrementTime = 0;
+        const slowIncrementInterval = 1000; 
 
         const updateFakeProgress = () => {
+            const now = Date.now();
+            
             if (realProgress > fakeProgress) {
                 fakeProgress = realProgress;
             } 
@@ -334,8 +338,9 @@
                 fakeProgress += 0.3 + Math.random() * 0.5; 
             }
 
-            if (fakeProgress > 89) {
-                fakeProgress += 0.1;
+            if (fakeProgress > 89 && now - lastSlowIncrementTime > slowIncrementInterval) {
+                fakeProgress = Math.min(fakeProgress + 0.5, 100);
+                lastSlowIncrementTime = now;
             }
 
             if (fakeProgress >= 100) fakeProgress = 100;
