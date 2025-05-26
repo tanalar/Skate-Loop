@@ -365,7 +365,7 @@
             let progressText = `Загрузка ${Math.floor(fakeProgress)}%`;
             
             if (fakeProgress >= FAST_INCREMENT_MAX && !isUnityLoaded) {
-                progressText = "Подождите еще немного...";
+                progressText = "Инициализация...";
             }
             
             document.getElementById("progress-text").innerText = progressText;
@@ -374,8 +374,6 @@
         function completeLoading() {
             document.getElementById("loading-screen").style.display = "none";
         }
-
-
 
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
