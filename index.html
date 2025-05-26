@@ -78,7 +78,7 @@
     ">
       <style>
     #rules {
-        max-width: 400px;
+        max-width: 410px;
         width: 100%;
         padding: 0 25px;
         font-family: sans-serif;
@@ -323,14 +323,39 @@
             }
         });
 
+        let fakeProgress = 0;
+        let realProgress = 0;
+
+        const updateFakeProgress = () => {
+            if (realProgress > fakeProgress) {
+                fakeProgress = realProgress;
+            } 
+            else {
+                fakeProgress += 0.3 + Math.random() * 0.5; 
+            }
+
+            if (fakeProgress > 89) {
+                fakeProgress += 0.1;
+            }
+
+            if (fakeProgress >= 100) fakeProgress = 100;
+
+            document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
+            document.getElementById("progress-text").innerText = `Загрузка ${Math.floor(fakeProgress)}%`;
+
+            if (fakeProgress < 100) {
+                requestAnimationFrame(updateFakeProgress);
+            }
+        };
+
+        updateFakeProgress();
+
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
         script.onload = () => {
             createUnityInstance(canvas, config, (progress) => {
                 Telegram?.WebApp?.setHeaderColor?.("#110b31");
-                const percent = Math.round(progress * 100);
-                document.getElementById("progress-bar").style.width = `${percent}%`;
-                document.getElementById("progress-text").innerText = percent < 90 ? `Загрузка ${percent}%` : "Инициализация...";
+                realProgress = Math.round(progress * 100);
 
             }).then((unityInstance) => {
                 window.unityInstance = unityInstance;
