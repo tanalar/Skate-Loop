@@ -228,35 +228,12 @@
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
         script.onload = () => {
-            let fakeProgress = 90;
-            let isCompleted = false;
-            let fakeInterval;
-
             createUnityInstance(canvas, config, (progress) => {
+                Telegram?.WebApp?.setHeaderColor?.("#110b31");
                 const percent = Math.round(progress * 100);
-                const bar = document.getElementById("progress-bar");
-                const text = document.getElementById("progress-text");
-
-                if (percent < 90) {
-                    clearInterval(fakeInterval);
-                    fakeProgress = percent;
-                    bar.style.width = `${percent}%`;
-                    text.innerText = `Загрузка ${percent}%`;
-                } else if (!fakeInterval && !isCompleted) {
-                    fakeInterval = setInterval(() => {
-                        if (fakeProgress < 99) {
-                            fakeProgress++;
-                            bar.style.width = `${fakeProgress}%`;
-                            text.innerText = `Загрузка ${fakeProgress}%`;
-                        }
-                    }, 1000);
-                }
+                document.getElementById("progress-bar").style.width = `${percent}%`;
+                document.getElementById("progress-text").innerText = `Загрузка ${percent}%`;
             }).then((unityInstance) => {
-                isCompleted = true;
-                clearInterval(fakeInterval);
-                document.getElementById("progress-bar").style.width = `100%`;
-                document.getElementById("progress-text").innerText = `Загрузка 100%`;
-
                 window.unityInstance = unityInstance;
                 resizeCanvas();
                 document.getElementById("loading-screen").style.display = "none";
@@ -271,7 +248,6 @@
                 console.error("Unity initialization failed:", error);
             });
         };
-
         document.body.appendChild(script);</script>
 </body>
 </html>

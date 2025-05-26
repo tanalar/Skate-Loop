@@ -173,7 +173,6 @@
 
         .back-button:hover {
             transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.9);
         }
 
         .title {
@@ -324,9 +323,6 @@
                 window.parent.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             }
 
-            const backBtn = document.querySelector('.back-button');
-            if (backBtn) backBtn.blur();
-            
             window.parent.hideLeaderboard();
         }
 
