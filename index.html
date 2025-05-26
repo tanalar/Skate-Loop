@@ -325,33 +325,27 @@
 
         let fakeProgress = 0;
         let realProgress = 0;
-        let slowProgressStarted = false;
+        let lastSlowIncrementTime = 0;
+        const slowIncrementInterval = 1500; 
 
         const updateFakeProgress = () => {
-            if (!slowProgressStarted) {
-                if (realProgress < 89) {
-                    fakeProgress = realProgress;
-                } else {
-                    fakeProgress = 89;
-                    slowProgressStarted = true;
-                    setTimeout(incrementSlowProgress, 2000);
+            const now = Date.now();
+            
+            if (realProgress > fakeProgress) {
+                fakeProgress = realProgress;
+            } 
+            else if (now - lastSlowIncrementTime > slowIncrementInterval) {
+                    fakeProgress = Math.min(fakeProgress + 0.1, 100);
+                    lastSlowIncrementTime = now;
                 }
-            }
+
+            if (fakeProgress >= 100) fakeProgress = 100;
 
             document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
             document.getElementById("progress-text").innerText = `Загрузка ${Math.floor(fakeProgress)}%`;
 
-            if (!slowProgressStarted) {
-                requestAnimationFrame(updateFakeProgress);
-            }
-        };
-
-        const incrementSlowProgress = () => {
             if (fakeProgress < 100) {
-                fakeProgress = Math.min(fakeProgress + 1, 100);
-                document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
-                document.getElementById("progress-text").innerText = `Загрузка ${Math.floor(fakeProgress)}%`;
-                setTimeout(incrementSlowProgress, 2000);
+                requestAnimationFrame(updateFakeProgress);
             }
         };
 
