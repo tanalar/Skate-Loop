@@ -323,7 +323,7 @@
             }
         });
 
-       let fakeProgress = 0;
+        let fakeProgress = 0;
         let realProgress = 0;
         let lastSlowIncrementTime = 0;
         let isUnityLoaded = false;
@@ -351,7 +351,11 @@
                 fakeProgress = 100;
             }
 
-            updateProgressUI();
+            const progress = fakeProgress;
+            if(fakeProgress >= FAST_INCREMENT_MAX && !isUnityLoaded){
+                fakeProgress = Math.min(fakeProgress + SLOW_INCREMENT_AMOUNT, 99);
+            }
+            updateProgressUI(fakeProgress);
             
             if (!isUnityLoaded || fakeProgress < 100) {
                 requestAnimationFrame(updateFakeProgress);
@@ -360,13 +364,9 @@
             }
         };
 
-        function updateProgressUI() {
-            document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
-            let progressText = `Загрузка ${Math.floor(fakeProgress)}%`;
-            
-            if (fakeProgress >= FAST_INCREMENT_MAX && !isUnityLoaded) {
-                progressText = "Инициализация...";
-            }
+        function updateProgressUI(progress) {
+            document.getElementById("progress-bar").style.width = `${progress}%`;
+            let progressText = `Загрузка ${Math.floor(progress)}%`;
             
             document.getElementById("progress-text").innerText = progressText;
         }
