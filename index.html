@@ -338,22 +338,27 @@
 
         const loadingScreen = document.getElementById("loading-screen");
 
-        const updateFakeProgress = () => {
+        let progressInterval = setInterval(() => {
+            if (loadingScreen.style.display === "none") {
+                clearInterval(progressInterval);
+                return;
+            }
+            
             if (realProgress > fakeProgress) {
                 fakeProgress = realProgress;
             }
-
-            if (lastFakeProgress == fakeProgress && fakeProgress < 100) {
+            
+            if (lastFakeProgress === fakeProgress && fakeProgress < 100) {
                 fakeProgress += 0.1 + Math.random() * 0.2;
             }
-
+            
             if (fakeProgress >= 100) fakeProgress = 100;
-
+            
             lastFakeProgress = fakeProgress;
-
+            
             const progressBar = document.getElementById("progress-bar");
             const progressText = document.getElementById("progress-text");
-
+            
             if (fakeProgress < 98) {
                 progressBar.style.width = `${fakeProgress}%`;
                 progressText.innerText = `Загрузка ${Math.floor(fakeProgress)}%`;
@@ -364,13 +369,10 @@
                 progressBar.style.background = "linear-gradient(90deg, rgba(255,255,255,0.2) 0%, #fff 50%, rgba(255,255,255,0.2) 100%)";
                 progressBar.style.backgroundSize = "200% 100%";
             }
+        }, 50);
 
-            if (loadingScreen.style.display !== "none") {
-                requestAnimationFrame(updateFakeProgress);
-            }
-        };
 
-        updateFakeProgress();
+        progressInterval();
 
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
