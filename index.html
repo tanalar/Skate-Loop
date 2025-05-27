@@ -114,9 +114,9 @@
         opacity: 0.7;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 410px) {
         #rules {
-            padding: 0 15px;
+            padding: 0 20px;
             font-size: 14px;
         }
 
@@ -131,6 +131,18 @@
             height: 14px !important;
         }
     }
+</style>
+<style>
+@keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.loading-loop {
+    background: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, #fff 50%, rgba(255,255,255,0.2) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+}
 </style>
 
 <div id="rules">
@@ -339,8 +351,18 @@
             if (fakeProgress >= 100) fakeProgress = 100;
 
             lastFakeProgress = fakeProgress;
-            document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
-            document.getElementById("progress-text").innerText = fakeProgress < 98 ? `Загрузка ${Math.floor(fakeProgress)}%` : 'Подготовка файлов игры..';
+
+            const progressBar = document.getElementById("progress-bar");
+            const progressText = document.getElementById("progress-text");
+
+            if (fakeProgress < 98) {
+                progressBar.style.width = `${fakeProgress}%`;
+                progressText.innerText = `Загрузка ${Math.floor(fakeProgress)}%`;
+            } else {
+                progressText.innerText = 'Подготовка файлов игры..';
+                progressBar.classList.add("loading-loop");
+            }
+
 
             if (fakeProgress < 100) {
                 requestAnimationFrame(updateFakeProgress);
