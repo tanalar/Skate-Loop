@@ -336,6 +336,8 @@
         let lastFakeProgress = 0;
         let realProgress = 0;
 
+        const loadingScreen = document.getElementById("loading-screen");
+
         const updateFakeProgress = () => {
             if (realProgress > fakeProgress) {
                 fakeProgress = realProgress;
@@ -363,7 +365,7 @@
                 progressBar.style.backgroundSize = "200% 100%";
             }
 
-            if (!document.hidden) {
+            if (loadingScreen.style.display !== "none") {
                 requestAnimationFrame(updateFakeProgress);
             }
         };
@@ -379,13 +381,13 @@
 
             }).then((unityInstance) => {
                 window.unityInstance = unityInstance;
+                realProgress = 100;
                 resizeCanvas();
                 document.getElementById("progress-bar").classList.remove("loading-loop");
                 document.getElementById("loading-screen").style.display = "none";
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
                 // Telegram?.WebApp?.requestFullscreen?.();
-                updateFakeProgress();
                 
                 if (window.Adsgram) {
                     window.interstitial = window.Adsgram.init({ blockId: "int-11287" });
