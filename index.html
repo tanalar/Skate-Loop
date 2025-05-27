@@ -132,6 +132,18 @@
         }
     }
 </style>
+<style>
+@keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.loading-loop {
+    background: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, #fff 50%, rgba(255,255,255,0.2) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+}
+</style>
 
 <div id="rules">
     <div class="rule-item">
@@ -297,9 +309,7 @@
         };
     </script>
 
-   <script>
-    window.onload = async () => {
-        const canvas = document.querySelector("#unity-canvas");
+    <script>const canvas = document.querySelector("#unity-canvas");
         const config = {
             dataUrl: "Build/Skate-Loop.data",
             frameworkUrl: "Build/Skate-Loop.framework.js",
@@ -325,71 +335,56 @@
             }
         });
 
-        const loadingScreen = document.getElementById("loading-screen");
-        const progressBar = document.getElementById("progress-bar");
-        const progressText = document.getElementById("progress-text");
-
         let fakeProgress = 0;
         let lastFakeProgress = 0;
         let realProgress = 0;
 
-        const progressInterval = setInterval(() => {
-            if (loadingScreen.style.display === "none") {
-                clearInterval(progressInterval);
-                return;
-            }
-
+        const updateFakeProgress = () => {
             if (realProgress > fakeProgress) {
                 fakeProgress = realProgress;
             }
 
-            if (lastFakeProgress === fakeProgress && fakeProgress < 100) {
-                fakeProgress += 0.5 + Math.random() * 0.2;
+            if (lastFakeProgress == fakeProgress && fakeProgress < 100) {
+                fakeProgress += 0.1 + Math.random() * 0.2;
             }
 
             if (fakeProgress >= 100) fakeProgress = 100;
 
             lastFakeProgress = fakeProgress;
-
-            if (fakeProgress < 90) {
-                progressBar.style.width = `${fakeProgress}%`;
-                progressText.innerText = `Загрузка ${Math.floor(fakeProgress)}%`;
-            } else {
-                progressText.innerText = 'Еще пару секунд...';
+            document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
+            document.getElementById("progress-text").innerText = fakeProgress < 98 ? `Загрузка ${Math.floor(fakeProgress)}%` : 'Подготовка файлов игры..';
+            
+            if (fakeProgress < 100) {
+                requestAnimationFrame(updateFakeProgress);
             }
-        }, 100);
+        };
+
+        updateFakeProgress();
 
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
-        script.onload = async () => {
-            try {
-                const unityInstance = await createUnityInstance(canvas, config, (progress) => {
-                    Telegram?.WebApp?.setHeaderColor?.("#110b31");
-                    realProgress = Math.round(progress * 100);
-                });
+        script.onload = () => {
+            createUnityInstance(canvas, config, (progress) => {
+                Telegram?.WebApp?.setHeaderColor?.("#110b31");
+                realProgress = Math.round(progress * 100);
 
+            }).then((unityInstance) => {
                 window.unityInstance = unityInstance;
-                realProgress = 100;
                 resizeCanvas();
-
-                loadingScreen.style.display = "none";
-
+                document.getElementById("loading-screen").style.display = "none";
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
+                // Telegram?.WebApp?.requestFullscreen?.();
 
                 if (window.Adsgram) {
                     window.interstitial = window.Adsgram.init({ blockId: "int-11287" });
                     window.rewarded = window.Adsgram.init({ blockId: "11286" });
                 }
-
-            } catch (error) {
+            }).catch((error) => {
                 console.error("Unity initialization failed:", error);
-            }
+            });
         };
-
-        document.body.appendChild(script);
-    };
-    </script>
-
+       
+        document.body.appendChild(script);</script>
 </body>
 </html>
