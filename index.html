@@ -363,7 +363,7 @@
                 progressBar.style.backgroundSize = "200% 100%";
             }
 
-            if (!window.unityInstance) {
+            if (!document.hidden) {
                 requestAnimationFrame(updateFakeProgress);
             }
         };
