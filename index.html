@@ -324,56 +324,30 @@
         });
 
         let fakeProgress = 0;
+        let lastFakeProgress = 0;
         let realProgress = 0;
-        let lastSlowIncrementTime = 0;
-        let isUnityLoaded = false;
-        const SLOW_INCREMENT_INTERVAL = 2000; 
-        const SLOW_INCREMENT_AMOUNT = 1;     
-        const FAST_INCREMENT_MAX = 90;   
 
         const updateFakeProgress = () => {
-            const now = Date.now();
-            
-            if (realProgress <= FAST_INCREMENT_MAX) {
+            if (realProgress > fakeProgress) {
                 fakeProgress = realProgress;
             }
 
-            else if (!isUnityLoaded) {
-                if (realProgress > fakeProgress) {
-                    fakeProgress = realProgress;
-                }
-                else if (now - lastSlowIncrementTime > SLOW_INCREMENT_INTERVAL) {
-                    fakeProgress = Math.min(fakeProgress + SLOW_INCREMENT_AMOUNT, 99);
-                    lastSlowIncrementTime = now;
-                }
-            }
-            else {
-                fakeProgress = 100;
+            if (lastFakeProgress == fakeProgress && fakeProgress < 100) {
+                fakeProgress += 0.1 + Math.random() * 0.2;
             }
 
-            const progress = fakeProgress;
-            if(fakeProgress >= FAST_INCREMENT_MAX && !isUnityLoaded){
-                fakeProgress = Math.min(fakeProgress + SLOW_INCREMENT_AMOUNT, 99);
-            }
-            updateProgressUI(fakeProgress);
-            
-            if (!isUnityLoaded || fakeProgress < 99) {
+            if (fakeProgress >= 100) fakeProgress = 100;
+
+            lastFakeProgress = fakeProgress;
+            document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
+            document.getElementById("progress-text").innerText = `Загрузка ${Math.floor(fakeProgress)}%`;
+
+            if (fakeProgress < 100) {
                 requestAnimationFrame(updateFakeProgress);
-            } else {
-                completeLoading();
             }
         };
 
-        function updateProgressUI(progress) {
-            document.getElementById("progress-bar").style.width = `${progress}%`;
-            let progressText = `Загрузка ${Math.floor(progress)}%`;
-            
-            document.getElementById("progress-text").innerText = progressText;
-        }
-
-        function completeLoading() {
-            document.getElementById("loading-screen").style.display = "none";
-        }
+        updateFakeProgress();
 
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
@@ -388,7 +362,6 @@
                 document.getElementById("loading-screen").style.display = "none";
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
-                isUnityLoaded = true;
 
                 if (window.Adsgram) {
                     window.interstitial = window.Adsgram.init({ blockId: "int-11287" });
@@ -398,7 +371,7 @@
                 console.error("Unity initialization failed:", error);
             });
         };
-        updateFakeProgress();
+       
         document.body.appendChild(script);</script>
 </body>
 </html>
