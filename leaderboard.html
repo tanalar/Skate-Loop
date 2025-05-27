@@ -147,10 +147,46 @@
                 transform: rotate(360deg);
             }
         }
+
+        .header {
+            position: relative;
+            margin-bottom: 30px;
+            text-align: center;
+            height: 36px;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 36px;
+        }
+
     </style>
 </head>
 <body>
     <div id="leaderboard-container">
+        <div class="header">
+            <button class="back-button" onclick="handleBackClick()"></button>
+            <h1 class="title">Лидеры</h1>
+        </div>
+
         <div class="tabs">
             <div class="tab" data-tab="balance">Деньги</div>
             <div class="tab active" data-tab="stars">Общий</div>
@@ -161,8 +197,8 @@
             <img src="" alt="Top Player" />
             <div class="top-player-name">Имя</div>
             <div class="score-line">
-                <div>⭐ 0</div>
-                <div>🏆 0</div>
+                <div>0</div>
+                <div>0</div>
             </div>
         </div>
 
@@ -223,9 +259,10 @@
             const icon = currentTab === 'balance'
                 ? '<img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:20px; height:20px; vertical-align:middle; padding-bottom:2px; border: none;" />'
                 : '<img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:20px; height:20px; vertical-align:middle; padding-bottom:2px; border: none;" />';
+            const cupIcon = '<img src="https://emojio.ru/images/apple-b/1f3c6.png" style="width:20px; height:16px; vertical-align:middle; padding-bottom:2px; border: none;" />';
             container.querySelector('.score-line').innerHTML = `
                         <div>${icon} <a style="padding-top: 4px; display: inline-block;">${currentTab === 'balance' ? category.score.toFixed(2) : category.score || 0}</a></div>
-                        <div>🏆 ${category.place || 0}</div>`;
+                        <div>${cupIcon} <a style="padding-top: 4px; display: inline-block;">${category.place || 0}</a></div>`;
 
             const playersList = document.getElementById('players-list');
             playersList.innerHTML = '';
@@ -276,6 +313,14 @@
 
                 playersList.appendChild(div);
             });
+        }
+
+        function handleBackClick() {
+            if (window.parent.Telegram && window.parent.Telegram.WebApp.HapticFeedback) {
+                window.parent.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            }
+
+            window.parent.hideLeaderboard();
         }
 
         document.querySelectorAll('.tab').forEach(tab => {

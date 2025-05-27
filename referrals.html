@@ -237,10 +237,45 @@
                 background: #4a4a4a;
                 pointer-events: none;
             }
+
+        .header {
+            position: relative;
+            margin-bottom: 30px;
+            text-align: center;
+            height: 36px;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 36px;
+        }
     </style>
 </head>
 <body>
     <div id="referral-container">
+        <div class="header">
+            <button class="back-button" onclick="handleBackClick()"></button>
+            <h1 class="title">Друзья</h1>
+        </div>
+
         <div class="balance-container">
             <div class="balance-item">
                 <div class="balance-title">Награды</div>
@@ -313,6 +348,14 @@
                     `;
                 container.appendChild(div);
             });
+        }
+
+        function handleBackClick() {
+            if (window.parent.Telegram && window.parent.Telegram.WebApp.HapticFeedback) {
+                window.parent.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            }
+
+            window.parent.hideReferrals();
         }
 
         document.getElementById('invite-button').addEventListener('click', () => {

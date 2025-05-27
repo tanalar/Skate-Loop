@@ -76,7 +76,117 @@
         color: white;
         font-family: sans-serif;
     ">
-        <img src="https://i.ibb.co/qY24Kf52/logo2.png" alt="Logo" style="width: 250px; height: auto; margin-bottom: 50px;" />
+      <style>
+    #rules {
+        max-width: 410px;
+        width: 100%;
+        padding: 0 25px;
+        font-family: sans-serif;
+        color: white;
+        /* text-align: justify; */
+        font-size: 16px;
+        line-height: 1.2;
+        box-sizing: border-box;
+        margin: 0 auto;
+    }
+
+    .rule-item {
+        margin-bottom: 18px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .rule-icon {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(45deg, #a58eff, #7950f2);
+        border-radius: 50%;
+        margin-right: 12px;
+        margin-top: 5px;
+    }
+
+    .rule-text div:first-child {
+        font-weight: bold;
+    }
+
+    .rule-text div:last-child {
+        opacity: 0.7;
+    }
+
+    @media (max-width: 410px) {
+        #rules {
+            padding: 0 20px;
+            font-size: 14px;
+        }
+
+        .rule-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+        }
+
+        .rule-text img {
+            width: 14px !important;
+            height: 14px !important;
+        }
+    }
+</style>
+<style>
+@keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.loading-loop {
+    background: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, #fff 50%, rgba(255,255,255,0.2) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+}
+</style>
+
+<div id="rules">
+    <div class="rule-item">
+        <div class="rule-icon"></div>
+        <div class="rule-text">
+            <div>Собирай звезды и убегай от монстров</div>
+            <div>Избегай столкновений и собирай как можно больше наград!</div>
+        </div>
+    </div>
+
+    <div class="rule-item">
+        <div class="rule-icon"></div>
+        <div class="rule-text">
+            <div>
+                Набери 10
+                <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:16px; height:16px; vertical-align:middle; margin-bottom: 3px;" />
+                за игру и получи 0,3
+                <img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:17px; height:17px; vertical-align:middle; margin-bottom: 3px;" />
+            </div>
+            <div>Достигни цели за одну игру и получи награду!</div>
+        </div>
+    </div>
+
+    <div class="rule-item">
+        <div class="rule-icon"></div>
+        <div class="rule-text">
+            <div>
+                Установи мировой рекорд и получи 3
+                <img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:17px; height:17px; vertical-align:middle; margin-bottom: 3px;" />
+            </div>
+            <div>Покажи лучший результат среди всех игроков и получи крупную награду!</div>
+        </div>
+    </div>
+
+    <div class="rule-item" style="margin-bottom: 0;">
+        <div class="rule-icon"></div>
+        <div class="rule-text">
+            <div>Платим сразу, а не когда-нибудь потом!</div>
+            <div>Начисление моментально после выполнения условий - без ожиданий.</div>
+        </div>
+    </div>
+</div>
+
 
         <div style="position: absolute; bottom: 40px; width: 80%; max-width: 400px;">
             <div style="width: 100%; background: rgba(255, 255, 255, 0.2); height: 14px; border-radius: 7px; overflow: hidden;">
@@ -99,8 +209,8 @@
             const frame = document.getElementById('leaderboard-frame');
             frame.style.display = 'block';
             frame.contentWindow.postMessage({ type: 'showLeaderboard' }, window.location.origin);
-            Telegram?.WebApp?.BackButton?.show();
-            Telegram?.WebApp?.BackButton?.onClick(window.hideLeaderboard);
+            //Telegram?.WebApp?.BackButton?.show();
+            //Telegram?.WebApp?.BackButton?.onClick(window.hideLeaderboard);
         };
 
         window.hideLeaderboard = function () {
@@ -108,6 +218,8 @@
             frame.contentWindow.postMessage({ type: 'hideLeaderboard' }, window.location.origin);
             frame.style.display = 'none';
             Telegram?.WebApp?.BackButton?.hide();
+            const avatar = document.getElementById('user-avatar-wrapper');
+            if (avatar) avatar.style.display = 'block';
         };
 
         window.sendLeaderboardData = function (data) {
@@ -129,8 +241,8 @@
             const frame = document.getElementById('referral-frame');
             frame.style.display = 'block';
             frame.contentWindow.postMessage({ type: 'showReferrals' }, window.location.origin);
-            Telegram?.WebApp?.BackButton?.show();
-            Telegram?.WebApp?.BackButton?.onClick(window.hideReferrals);
+            //Telegram?.WebApp?.BackButton?.show();
+            //Telegram?.WebApp?.BackButton?.onClick(window.hideReferrals);
         };
 
         window.hideReferrals = function () {
@@ -138,6 +250,8 @@
             frame.contentWindow.postMessage({ type: 'hideReferrals' }, window.location.origin);
             frame.style.display = 'none';
             Telegram?.WebApp?.BackButton?.hide();
+            const avatar = document.getElementById('user-avatar-wrapper');
+            if (avatar) avatar.style.display = 'block';
         };
 
         window.sendReferralsData = function (data) {
@@ -221,20 +335,46 @@
             }
         });
 
+        let fakeProgress = 0;
+        let lastFakeProgress = 0;
+        let realProgress = 0;
+
+        const updateFakeProgress = () => {
+            if (realProgress > fakeProgress) {
+                fakeProgress = realProgress;
+            }
+
+            if (lastFakeProgress == fakeProgress && fakeProgress < 100) {
+                fakeProgress += 0.1 + Math.random() * 0.2;
+            }
+
+            if (fakeProgress >= 100) fakeProgress = 100;
+
+            lastFakeProgress = fakeProgress;
+            document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
+            document.getElementById("progress-text").innerText = fakeProgress < 97 ? `Загрузка ${Math.floor(fakeProgress)}%` : 'Осталось менее 10 секунд...';
+            
+            if (fakeProgress < 100) {
+                requestAnimationFrame(updateFakeProgress);
+            }
+        };
+
+        updateFakeProgress();
+
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
         script.onload = () => {
             createUnityInstance(canvas, config, (progress) => {
                 Telegram?.WebApp?.setHeaderColor?.("#110b31");
-                const percent = Math.round(progress * 100);
-                document.getElementById("progress-bar").style.width = `${percent}%`;
-                document.getElementById("progress-text").innerText = `Загрузка ${percent}%`;
+                realProgress = Math.round(progress * 100);
+
             }).then((unityInstance) => {
                 window.unityInstance = unityInstance;
                 resizeCanvas();
                 document.getElementById("loading-screen").style.display = "none";
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
+                // Telegram?.WebApp?.requestFullscreen?.();
 
                 if (window.Adsgram) {
                     window.interstitial = window.Adsgram.init({ blockId: "int-11287" });
@@ -244,6 +384,7 @@
                 console.error("Unity initialization failed:", error);
             });
         };
+       
         document.body.appendChild(script);</script>
 </body>
 </html>
