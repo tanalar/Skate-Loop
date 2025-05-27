@@ -131,18 +131,15 @@
             height: 14px !important;
         }
     }
-</style>
-<style>
-@keyframes shimmer {
-    0% { background-position: -100% 0; }
-    100% { background-position: 200% 0; }
-}
 
-.loading-loop {
-    background: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, #fff 50%, rgba(255,255,255,0.2) 100%);
-    background-size: 200% 100%;
-    animation: shimmer 1.2s infinite;
-}
+    @keyframes shimmer {
+        0% { background-position: -100% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    .loading-loop {
+        animation: shimmer 1.2s infinite;
+    }
 </style>
 
 <div id="rules">
@@ -361,8 +358,10 @@
             } else {
                 progressText.innerText = 'Подготовка файлов игры..';
                 progressBar.classList.add("loading-loop");
+                progressBar.style.width = "100%";
+                progressBar.style.background = "linear-gradient(90deg, rgba(255,255,255,0.2) 0%, #fff 50%, rgba(255,255,255,0.2) 100%)";
+                progressBar.style.backgroundSize = "200% 100%";
             }
-
 
             if (fakeProgress < 100) {
                 requestAnimationFrame(updateFakeProgress);
@@ -381,6 +380,7 @@
             }).then((unityInstance) => {
                 window.unityInstance = unityInstance;
                 resizeCanvas();
+                document.getElementById("progress-bar").classList.remove("loading-loop");
                 document.getElementById("loading-screen").style.display = "none";
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
