@@ -385,7 +385,8 @@
                 Telegram?.WebApp?.ready?.();
                 Telegram?.WebApp?.expand?.();
                 // Telegram?.WebApp?.requestFullscreen?.();
-
+                updateFakeProgress();
+                
                 if (window.Adsgram) {
                     window.interstitial = window.Adsgram.init({ blockId: "int-11287" });
                     window.rewarded = window.Adsgram.init({ blockId: "11286" });
