@@ -357,7 +357,7 @@
             }
             updateProgressUI(fakeProgress);
             
-            if (!isUnityLoaded || fakeProgress < 100) {
+            if (!isUnityLoaded || fakeProgress < 99) {
                 requestAnimationFrame(updateFakeProgress);
             } else {
                 completeLoading();
