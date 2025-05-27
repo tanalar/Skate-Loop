@@ -352,7 +352,7 @@
 
             lastFakeProgress = fakeProgress;
             document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
-            document.getElementById("progress-text").innerText = fakeProgress < 98 ? `Загрузка ${Math.floor(fakeProgress)}%` : 'Подготовка файлов игры..';
+            document.getElementById("progress-text").innerText = fakeProgress < 97 ? `Загрузка ${Math.floor(fakeProgress)}%` : 'Осталось менее 15 секунд...';
             
             if (fakeProgress < 100) {
                 requestAnimationFrame(updateFakeProgress);
