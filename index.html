@@ -131,19 +131,6 @@
             height: 14px !important;
         }
     }
-
-    @keyframes shimmer {
-        0% { background-position: -100% 0; }
-        100% { background-position: 200% 0; }
-    }
-
-    .loading-loop {
-        width: 100% !important;
-        background: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, #fff 50%, rgba(255,255,255,0.2) 100%) !important;
-        background-size: 200% 100% !important;
-        animation: shimmer 1.2s infinite;
-        }
-
 </style>
 
 <div id="rules">
@@ -368,10 +355,9 @@
                 progressBar.style.width = `${fakeProgress}%`;
                 progressText.innerText = `Загрузка ${Math.floor(fakeProgress)}%`;
             } else {
-                progressText.innerText = 'Подготовка файлов игры..';
-                progressBar.classList.add("loading-loop");
+                progressText.innerText = 'Еще пару секунд...';
             }
-        }, 500);
+        }, 100);
 
         const script = document.createElement("script");
         script.src = "Build/Skate-Loop.loader.js";
@@ -386,7 +372,6 @@
                 realProgress = 100;
                 resizeCanvas();
 
-                progressBar.classList.remove("loading-loop");
                 loadingScreen.style.display = "none";
 
                 Telegram?.WebApp?.ready?.();
