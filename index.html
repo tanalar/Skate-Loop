@@ -8,6 +8,10 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@2.1.0/dist/tonconnect-ui.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <script src="https://js.onclckvd.com/in-stream-ad-admanager/tma.js"></script>
+    <script async data-onclicka-banner="343843" src="https://js.onclckmn.com/banner/oncbanner.m.js" data-onclicka-banner-ar="c"></script>
+    <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
+    <script src="ads.js"></script>
 
     <style>
         #unity-canvas {
@@ -118,8 +122,13 @@
         }
 
         @keyframes shimmer {
-            0% { background-position: -100% 0; }
-            100% { background-position: 200% 0; }
+            0% {
+                background-position: -100% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
         }
 
         .loading-loop {
@@ -163,7 +172,7 @@
                 <div class="rule-icon"></div>
                 <div class="rule-text">
                     <div>
-                        Набери 10
+                        Набери 12
                         <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:16px; height:16px; vertical-align:middle; margin-bottom: 3px;" />
                         за игру и получи 0,3
                         <img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:17px; height:17px; vertical-align:middle; margin-bottom: 3px;" />
@@ -284,34 +293,30 @@
         }</script>
 
     <script>
+
         window.showInterstitial = function () {
-            if (window.Adsgram) {
-                window.interstitial.show()
-                    .then(() => {
-                        window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialClosed");
-                    })
-                    .catch((err) => {
-                        window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialFailed", JSON.stringify(err));
-                    });
-            } else {
-                console.warn("Adsgram not initialized");
-            }
+            window.AdsManager.showInterstitial(
+                () => window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialClosed"),
+                (err) => window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialFailed", JSON.stringify(err))
+            );
         };
 
         window.showRewarded = function (rewardData) {
-            if (window.Adsgram) {
-                window.rewarded.show()
-                    .then(() => {
-                        const jsonStr = JSON.stringify(rewardData);
-                        window.unityInstance.SendMessage("WebAppHandler", "HandleRewardCompleted", jsonStr);
-                    })
-                    .catch((err) => {
-                        window.unityInstance.SendMessage("WebAppHandler", "HandleRewardFailed", JSON.stringify(err));
-                    });
-            } else {
-                console.warn("Adsgram not initialized");
-            }
+            window.AdsManager.showReward(
+                rewardData,
+                (data) => window.unityInstance.SendMessage("WebAppHandler", "HandleRewardCompleted", JSON.stringify(data)),
+                (err) => window.unityInstance.SendMessage("WebAppHandler", "HandleRewardFailed", JSON.stringify(err))
+            );
         };
+
+        window.showBannerAd = function () {
+            window.AdsManager.showBanner();
+        };
+
+        window.hideBannerAd = function () {
+            window.AdsManager.hideBanner();
+        };
+
     </script>
 
     <script>const canvas = document.querySelector("#unity-canvas");
@@ -381,10 +386,8 @@
                 Telegram?.WebApp?.expand?.();
                 // Telegram?.WebApp?.requestFullscreen?.();
 
-                if (window.Adsgram) {
-                    window.interstitial = window.Adsgram.init({ blockId: "int-11287" });
-                    window.rewarded = window.Adsgram.init({ blockId: "11286" });
-                }
+                window.AdsManager.initialize(window.unityInstance, window.Adsgram);
+
             }).catch((error) => {
                 console.error("Unity initialization failed:", error);
             });
