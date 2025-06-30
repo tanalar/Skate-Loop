@@ -23,19 +23,19 @@
             interstitialAdsgram = adsgram?.init({ blockId: "int-11287" });
             rewardedAdsgram = adsgram?.init({ blockId: "11286" });
 
-            onclickBannerDiv = document.createElement("div");
-            onclickBannerDiv.setAttribute("data-banner", "6079882");
-            onclickBannerDiv.style.display = "none";
-            document.body.appendChild(onclickBannerDiv);
-
             if (window.initCdTma) {
-                window.initCdTma({ id: "6077920" })
+                window.initCdTma({ id: "6077920" }, { id: "6079882" })
                     .then(show => {
                         onclickRewardedInitialized = true;
                         onclickRewardedShow = show;
                     })
                     .catch(e => console.error("Onclick Rewarded init error:", e));
             }
+
+            onclickBannerDiv = document.createElement("div");
+            onclickBannerDiv.setAttribute("data-banner", "6079882");
+            onclickBannerDiv.style.display = "none";
+            document.body.appendChild(onclickBannerDiv);
 
             window.TelegramAdsController = new TelegramAdsController();
             window.TelegramAdsController.initialize({
@@ -63,15 +63,15 @@
             const source = rewardedToggle % 3;
 
             if (source === 0) {
-                // Adsgram
-                console.log("Adsgram Reward");
-                if (rewardedAdsgram) {
-                    rewardedAdsgram.show()
-                        .then(() => onSuccess?.(rewardData))
-                        .catch(err => onError?.(err));
-                } else {
-                    onError?.("Rewarded Adsgram not initialized");
-                }
+                //// Adsgram
+                //console.log("Adsgram Reward");
+                //if (rewardedAdsgram) {
+                //    rewardedAdsgram.show()
+                //        .then(() => onSuccess?.(rewardData))
+                //        .catch(err => onError?.(err));
+                //} else {
+                //    onError?.("Rewarded Adsgram not initialized");
+                //}
             } else if (source === 1) {
                 // RichAds
                 console.log("RichAds Reward");
