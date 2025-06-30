@@ -64,6 +64,7 @@
 
             if (source === 0) {
                 // Adsgram
+                console.log("Adsgram Reward");
                 if (rewardedAdsgram) {
                     rewardedAdsgram.show()
                         .then(() => onSuccess?.(rewardData))
@@ -73,6 +74,7 @@
                 }
             } else if (source === 1) {
                 // RichAds
+                console.log("RichAds Reward");
                 if (window.TelegramAdsController) {
                     window.TelegramAdsController.triggerInterstitialBanner()
                         .then((result) => onSuccess?.(rewardData))
@@ -82,6 +84,7 @@
                 }
             } else if (source === 2) {
                 // Onclick
+                console.log("Onclick Reward");
                 if (onclickRewardedInitialized && onclickRewardedShow) {
                     onclickRewardedShow()
                         .then(() => onSuccess?.(rewardData))
@@ -95,11 +98,12 @@
         },
 
         showBanner: function () {
-            console.log("banner" + bannerToggle);
             if (bannerToggle % 2 === 0) {
+                console.log("RichAds Banner");
                 if (richBannerDiv) richBannerDiv.style.display = "block";
                 if (onclickBannerDiv) onclickBannerDiv.style.display = "none";
             } else {
+                console.log("OnClick Banner");
                 if (onclickBannerDiv) onclickBannerDiv.style.display = "block";
                 if (richBannerDiv) richBannerDiv.style.display = "none";
             }
