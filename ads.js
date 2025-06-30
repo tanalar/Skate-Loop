@@ -37,7 +37,7 @@
             onclickBannerDiv.style.display = "none"; 
             document.body.appendChild(onclickBannerDiv);
 
-            window.TelegramAdsController = new TelegramAdsController();
+            window.TelegramAdsController = new window.TelegramAdsController();
             window.TelegramAdsController.initialize({
                 pubId: "978045",
                 appId: "2700",
