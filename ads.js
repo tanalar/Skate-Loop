@@ -95,6 +95,7 @@
         },
 
         showBanner: function () {
+            console.log("banner" + bannerToggle);
             if (bannerToggle % 2 === 0) {
                 if (richBannerDiv) richBannerDiv.style.display = "block";
                 if (onclickBannerDiv) onclickBannerDiv.style.display = "none";
