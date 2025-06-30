@@ -44,7 +44,7 @@
             });
 
             richBannerDiv = document.createElement("div");
-            richBannerDiv.setAttribute("rich-banner");
+            richBannerDiv.setAttribute("rich-banner", "365397");
             richBannerDiv.style.display = "none";
             document.body.appendChild(richBannerDiv);
         },
