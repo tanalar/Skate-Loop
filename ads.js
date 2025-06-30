@@ -23,6 +23,11 @@
             interstitialAdsgram = adsgram?.init({ blockId: "int-11287" });
             rewardedAdsgram = adsgram?.init({ blockId: "11286" });
 
+            onclickBannerDiv = document.createElement("div");
+            onclickBannerDiv.setAttribute("data-banner", "6079882");
+            onclickBannerDiv.style.display = "none";
+            document.body.appendChild(onclickBannerDiv);
+
             if (window.initCdTma) {
                 window.initCdTma({ id: "338543" })
                     .then(show => {
@@ -31,14 +36,6 @@
                     })
                     .catch(e => console.error("Onclick Rewarded init error:", e));
             }
-
-            //onclickBannerDiv = document.createElement("div");
-            //onclickBannerDiv.setAttribute("data-banner", "6079882");
-            //onclickBannerDiv.style.display = "none";
-            //document.body.appendChild(onclickBannerDiv);
-
-            onclickBannerDiv = document.querySelector('div[data-banner="6079882"]');
-            onclickBannerDiv.style.display = "none";
 
             window.TelegramAdsController = new TelegramAdsController();
             window.TelegramAdsController.initialize({

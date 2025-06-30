@@ -139,7 +139,6 @@
     </style>
 </head>
 <body>
-    <div data-banner="6079882"></div>
     <div id="loading-screen" style="
         position: fixed;
         top: 0; left: 0;
@@ -220,8 +219,7 @@
     <iframe id="leaderboard-frame" src="leaderboard.html" allow="cross-origin-isolated"></iframe>
     <iframe id="referral-frame" src="referrals.html" allow="cross-origin-isolated"></iframe>
 
-    <script>
-    window.showLeaderboard = function () {
+    <script>window.showLeaderboard = function () {
             const frame = document.getElementById('leaderboard-frame');
             frame.style.display = 'block';
             frame.contentWindow.postMessage({ type: 'showLeaderboard' }, window.location.origin);
@@ -287,8 +285,7 @@
             }, window.location.origin);
         };</script>
 
-    <script>
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    <script>if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
             const meta = document.createElement('meta');
             meta.name = 'viewport';
             meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
@@ -322,8 +319,7 @@
 
     </script>
 
-    <script>
-    const canvas = document.querySelector("#unity-canvas");
+    <script>const canvas = document.querySelector("#unity-canvas");
         const config = {
             dataUrl: "Build/Skate-Loop.data",
             frameworkUrl: "Build/Skate-Loop.framework.js",
@@ -367,7 +363,7 @@
             lastFakeProgress = fakeProgress;
             document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
             document.getElementById("progress-text").innerText = fakeProgress < 97 ? `Загрузка ${Math.floor(fakeProgress)}%` : 'Осталось менее 15 секунд...';
-
+            
             if (fakeProgress < 100) {
                 requestAnimationFrame(updateFakeProgress);
             }
@@ -396,7 +392,7 @@
                 console.error("Unity initialization failed:", error);
             });
         };
-
+       
         document.body.appendChild(script);</script>
 </body>
 </html>
