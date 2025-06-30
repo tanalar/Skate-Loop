@@ -32,10 +32,13 @@
                     .catch(e => console.error("Onclick Rewarded init error:", e));
             }
 
-            onclickBannerDiv = document.createElement("div");
-            onclickBannerDiv.setAttribute("data-banner", "6079882");
-            onclickBannerDiv.style.display = "none"; 
-            document.body.appendChild(onclickBannerDiv);
+            //onclickBannerDiv = document.createElement("div");
+            //onclickBannerDiv.setAttribute("data-banner", "6079882");
+            //onclickBannerDiv.style.display = "none";
+            //document.body.appendChild(onclickBannerDiv);
+
+            onclickBannerDiv = document.querySelector('div[data-banner="6079882"]');
+            onclickBannerDiv.style.display = "none";
 
             window.TelegramAdsController = new TelegramAdsController();
             window.TelegramAdsController.initialize({
