@@ -29,7 +29,7 @@
             document.body.appendChild(onclickBannerDiv);
 
             if (window.initCdTma) {
-                window.initCdTma({ id: "338543" })
+                window.initCdTma({ id: "6077920" })
                     .then(show => {
                         onclickRewardedInitialized = true;
                         onclickRewardedShow = show;
