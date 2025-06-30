@@ -63,15 +63,15 @@
             const source = rewardedToggle % 3;
 
             if (source === 0) {
-                //// Adsgram
-                //console.log("Adsgram Reward");
-                //if (rewardedAdsgram) {
-                //    rewardedAdsgram.show()
-                //        .then(() => onSuccess?.(rewardData))
-                //        .catch(err => onError?.(err));
-                //} else {
-                //    onError?.("Rewarded Adsgram not initialized");
-                //}
+                // Adsgram
+                console.log("Adsgram Reward");
+                if (rewardedAdsgram) {
+                    rewardedAdsgram.show()
+                        .then(() => onSuccess?.(rewardData))
+                        .catch(err => onError?.(err));
+                } else {
+                    onError?.("Rewarded Adsgram not initialized");
+                }
             } else if (source === 1) {
                 // RichAds
                 console.log("RichAds Reward");
