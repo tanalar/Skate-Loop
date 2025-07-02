@@ -41,12 +41,12 @@
                 onclickBannerDiv.style.display = "none";
             }
 
-            richadsController = new window.TelegramAdsController();
+            richadsController = new TelegramAdsController();
 
             richadsController.initialize({
                 pubId: "978045",
                 appId: "2700",
-                debug: false
+                debug: true
             });
 
             richBannerDiv = document.getElementById('rich-banner-365397');
