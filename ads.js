@@ -59,7 +59,7 @@
             };
 
             const onShowRewardCallback = (adId) => {
-                console.log(Showed ad: ', adId);
+                console.log('Showed ad: ', adId);
             };
 
             tadsReward = window.tads.init({
