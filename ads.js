@@ -7,8 +7,6 @@
     let onclickRewardedShow = null;
     let onclickBannerDiv = null;
 
-    let richBannerDiv = null;
-
     let tadsReward = null;
 
     let rewardedToggle = 0;
@@ -52,17 +50,6 @@
             onclickBannerDiv = document.querySelector('.onclick-banner');
             if (onclickBannerDiv) {
                 onclickBannerDiv.style.display = "none";
-            }
-
-            window.TelegramAdsController = new TelegramAdsController();
-            window.TelegramAdsController.initialize({
-                pubId: "978045",
-                appId: "2700",
-            });
-
-            richBannerDiv = document.querySelector('.rich-banner');
-            if (richBannerDiv) {
-                richBannerDiv.style.display = "none";
             }
 
             const adsNotFoundCallback = () => {
@@ -114,20 +101,8 @@
                 } else {
                     onError?.("Rewarded Adsgram not initialized");
                 }
+
             } else if (source === 1) {
-                // RichAds
-                console.log("RichAds Reward");
-                if (window.TelegramAdsController) {
-                    window.TelegramAdsController.triggerInterstitialVideo().then((result) => {
-                        onSuccess?.(rewardData);
-                        trackEventGA("reward_shown", "source", "richads");
-                    }).catch((err) => {
-                        onError?.(err);
-                    });
-                } else {
-                    onError?.("TelegramAdsController not available");
-                }
-            } else if (source === 2) {
                 // Onclick
                 console.log("Onclick Reward");
                 if (onclickRewardedInitialized && onclickRewardedShow) {
@@ -140,7 +115,7 @@
                 } else {
                     onError?.("Onclick Rewarded not ready");
                 }
-            } else if (source === 3) {
+            } else if (source === 2) {
                 // Tads
                 console.log("Tads Reward");
                 if (tadsReward) {
@@ -162,20 +137,15 @@
         showBanner: function () {
             if (bannerToggle % 2 === 0) {
                 console.log("RichAds Banner");
-                if (richBannerDiv) richBannerDiv.style.display = "block";
                 if (onclickBannerDiv) onclickBannerDiv.style.display = "none";
             } else {
                 console.log("OnClick Banner");
                 if (onclickBannerDiv) onclickBannerDiv.style.display = "block";
-                if (richBannerDiv) richBannerDiv.style.display = "none";
             }
             bannerToggle++;
         },
 
         hideBanner: function () {
-            if (richBannerDiv) {
-                richBannerDiv.style.display = "none";
-            }
             if (onclickBannerDiv) {
                 onclickBannerDiv.style.display = "none";
             }
