@@ -45,7 +45,7 @@
                 appId: "2700",
             });
 
-            richBannerDiv = document.querySelector('.rich-banner');
+            richBannerDiv = document.querySelector('.rich-banner-ad');
             if (richBannerDiv) {
                 richBannerDiv.style.display = "none";
             }
