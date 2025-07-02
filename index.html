@@ -9,9 +9,20 @@
     <script src="https://unpkg.com/@tonconnect/ui@2.1.0/dist/tonconnect-ui.min.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://js.onclckvd.com/in-stream-ad-admanager/tma.js"></script>
-    <script data-onclicka-banner="343843" async src="https://js.onclckmn.com/banner-admanager/oncbanner.m.js" data-onclicka-banner-ar="c"></script>
+    <script async data-onclicka-banner="343843" src="https://js.onclckmn.com/banner/oncbanner.m.js" data-onclicka-banner-ar="c"></script>
     <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
-    <script src="ads.js"></script>
+    <script src="https://w.tads.me/widget.js"></script>
+
+    <script src="ads.js" defer></script>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DB7PZ8NK73"></script>
+    <script>window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-DB7PZ8NK73', { debug_mode: false });
+    </script>
+
 
     <style>
         #unity-canvas {
@@ -139,6 +150,10 @@
     </style>
 </head>
 <body>
+    <div data-banner="6079882" class="onclick-banner"></div>
+    <div id="tads-container-531" class="tads-container"></div>
+    <div id="rich-banner-365397" class="rich-banner"></div>
+
     <div id="loading-screen" style="
         position: fixed;
         top: 0; left: 0;
@@ -292,9 +307,7 @@
             document.head.appendChild(meta);
         }</script>
 
-    <script>
-
-        window.showInterstitial = function () {
+    <script>window.showInterstitial = function () {
             window.AdsManager.showInterstitial(
                 () => window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialClosed"),
                 (err) => window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialFailed", JSON.stringify(err))
@@ -315,9 +328,17 @@
 
         window.hideBannerAd = function () {
             window.AdsManager.hideBanner();
-        };
+        };</script>
 
-    </script>
+    <script>function SendGAEvent(eventName) {
+            gtag('event', eventName);
+        }
+
+        function SendGAEventWithParam(eventName, paramName, paramValue) {
+            const params = {};
+            params[paramName] = paramValue;
+            gtag('event', eventName, params);
+        }</script>
 
     <script>const canvas = document.querySelector("#unity-canvas");
         const config = {
@@ -363,7 +384,7 @@
             lastFakeProgress = fakeProgress;
             document.getElementById("progress-bar").style.width = `${fakeProgress}%`;
             document.getElementById("progress-text").innerText = fakeProgress < 97 ? `Загрузка ${Math.floor(fakeProgress)}%` : 'Осталось менее 15 секунд...';
-            
+
             if (fakeProgress < 100) {
                 requestAnimationFrame(updateFakeProgress);
             }
@@ -392,7 +413,7 @@
                 console.error("Unity initialization failed:", error);
             });
         };
-       
+
         document.body.appendChild(script);</script>
 </body>
 </html>
