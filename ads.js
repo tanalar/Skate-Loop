@@ -65,7 +65,7 @@
             };
 
             tadsReward = window.tads.init({
-                widgetId: '#531',
+                widgetId: '#our_works 531',
                 type: 'static',
                 debug: false,
                 onShowReward: onShowRewardCallback,
