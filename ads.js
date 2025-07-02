@@ -65,7 +65,7 @@
             };
 
             tadsReward = window.tads.init({
-                widgetId: '#our_works 531',
+                widgetId: 531,
                 type: 'static',
                 debug: false,
                 onShowReward: onShowRewardCallback,
@@ -88,7 +88,7 @@
         showReward: function (rewardData, onSuccess, onError) {
             const source = rewardedToggle % 3;
 
-            if (source === 2) {
+            if (source === 0) {
                 // Adsgram
                 console.log("Adsgram Reward");
                 if (rewardedAdsgram) {
@@ -115,7 +115,7 @@
                 } else {
                     onError?.("Onclick Rewarded not ready");
                 }
-            } else if (source === 0) {
+            } else if (source === 2) {
                 // Tads
                 console.log("Tads Reward");
                 if (tadsReward) {
