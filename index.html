@@ -10,7 +10,8 @@
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script src="https://js.onclckvd.com/in-stream-ad-admanager/tma.js"></script>
     <script async data-onclicka-banner="343843" src="https://js.onclckmn.com/banner/oncbanner.m.js" data-onclicka-banner-ar="c"></script>
-    <script src="https://w.tads.me/widget.js" async></script>
+    <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
+    <script src="https://w.tads.me/widget.js"></script>
 
     <script src="ads.js" defer></script>
 
@@ -18,6 +19,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DB7PZ8NK73"></script>
     <script>window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
+        window.gtag = gtag;
         gtag('js', new Date());
         gtag('config', 'G-DB7PZ8NK73', { debug_mode: false });
     </script>
@@ -149,9 +151,10 @@
     </style>
 </head>
 <body>
-    <div data-banner="6079882" class="onclick-banner"></div>
-    <div id="tads-container-531" class="tads-container"></div>
-    <!----<div rich-banner="365397" class="rich-banner"></div>-->
+
+    <div data-banner="6079882"></div>
+    <div id="tads-container-531"></div>
+    <div id="rich-banner-365397"></div>
 
     <div id="loading-screen" style="
         position: fixed;
@@ -330,13 +333,13 @@
         };</script>
 
     <script>function SendGAEvent(eventName) {
-            gtag('event', eventName);
+            window.gtag('event', eventName);
         }
 
         function SendGAEventWithParam(eventName, paramName, paramValue) {
             const params = {};
             params[paramName] = paramValue;
-            gtag('event', eventName, params);
+            window.gtag('event', eventName, params);
         }</script>
 
     <script>const canvas = document.querySelector("#unity-canvas");
