@@ -45,10 +45,10 @@
                 appId: "2700",
             });
 
-            richBannerDiv = document.querySelectorAll('#rich-banner-365397');
-            if (richBannerDiv) {
-                richBannerDiv.style.display = "none";
-            }
+            //richBannerDiv = document.querySelectorAll('#rich-banner-365397');
+            //if (richBannerDiv) {
+            //    richBannerDiv.style.display = "none";
+            //}
 
             const adsNotFoundCallback = () => {
                 console.log('No ads found to show');
