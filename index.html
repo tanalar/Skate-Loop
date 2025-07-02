@@ -152,6 +152,7 @@
 <body>
     <div data-banner="6079882" class="onclick-banner"></div>
     <div id="tads-container-531" class="tads-container"></div>
+    <!----<div id="rich-banner-365397"></div>-->
 
     <div id="loading-screen" style="
         position: fixed;
@@ -233,7 +234,8 @@
     <iframe id="leaderboard-frame" src="leaderboard.html" allow="cross-origin-isolated"></iframe>
     <iframe id="referral-frame" src="referrals.html" allow="cross-origin-isolated"></iframe>
 
-    <script>window.showLeaderboard = function () {
+    <script>
+    window.showLeaderboard = function () {
             const frame = document.getElementById('leaderboard-frame');
             frame.style.display = 'block';
             frame.contentWindow.postMessage({ type: 'showLeaderboard' }, window.location.origin);
@@ -299,14 +301,16 @@
             }, window.location.origin);
         };</script>
 
-    <script>if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    <script>
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
             const meta = document.createElement('meta');
             meta.name = 'viewport';
             meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
             document.head.appendChild(meta);
         }</script>
 
-    <script>window.showInterstitial = function () {
+    <script>
+    window.showInterstitial = function () {
             window.AdsManager.showInterstitial(
                 () => window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialClosed"),
                 (err) => window.unityInstance.SendMessage("WebAppHandler", "HandleInterstitialFailed", JSON.stringify(err))
@@ -329,7 +333,8 @@
             window.AdsManager.hideBanner();
         };</script>
 
-    <script>function SendGAEvent(eventName) {
+    <script>
+    function SendGAEvent(eventName) {
             gtag('event', eventName);
         }
 
@@ -339,7 +344,8 @@
             gtag('event', eventName, params);
         }</script>
 
-    <script>const canvas = document.querySelector("#unity-canvas");
+    <script>
+    const canvas = document.querySelector("#unity-canvas");
         const config = {
             dataUrl: "Build/Skate-Loop.data",
             frameworkUrl: "Build/Skate-Loop.framework.js",
