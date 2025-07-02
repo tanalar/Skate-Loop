@@ -14,21 +14,6 @@
     let rewardedToggle = 0;
     let bannerToggle = 0;
 
-    function trackEventGA(eventName, paramName = null, paramValue = null) {
-        if (typeof window.gtag !== "function") {
-            console.warn("gtag is not defined");
-            return;
-        }
-
-        if (paramName && paramValue) {
-            const params = {};
-            params[paramName] = paramValue;
-            window.gtag('event', eventName, params);
-        } else {
-            window.gtag('event', eventName);
-        }
-    }
-
     window.AdsManager = {
         initialize: function (unity, adsgram) {
             if (!adsgram) {
@@ -179,6 +164,21 @@
             if (onclickBannerDiv) {
                 onclickBannerDiv.style.display = "none";
             }
+        },
+
+        trackEventGA: function(eventName, paramName = null, paramValue = null) {
+        if (typeof window.gtag !== "function") {
+            console.warn("gtag is not defined");
+            return;
         }
+
+        if (paramName && paramValue) {
+            const params = {};
+            params[paramName] = paramValue;
+            window.gtag('event', eventName, params);
+        } else {
+            window.gtag('event', eventName);
+        }
+    }
     };
 })();
