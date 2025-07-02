@@ -14,6 +14,21 @@
     let rewardedToggle = 0;
     let bannerToggle = 0;
 
+    function trackEventGA(eventName, paramName = null, paramValue = null) {
+        if (typeof window.gtag !== "function") {
+            console.warn("gtag is not defined");
+            return;
+        }
+
+        if (paramName && paramValue) {
+            const params = {};
+            params[paramName] = paramValue;
+            window.gtag('event', eventName, params);
+        } else {
+            window.gtag('event', eventName);
+        }
+    }
+
     window.AdsManager = {
         initialize: function (unity, adsgram) {
             if (!adsgram) {
@@ -45,10 +60,10 @@
                 appId: "2700",
             });
 
-            //richBannerDiv = document.querySelectorAll('#rich-banner-365397');
-            //if (richBannerDiv) {
-            //    richBannerDiv.style.display = "none";
-            //}
+            richBannerDiv = document.querySelector('.rich-banner');
+            if (richBannerDiv) {
+                richBannerDiv.style.display = "none";
+            }
 
             const adsNotFoundCallback = () => {
                 console.log('No ads found to show');
@@ -59,7 +74,7 @@
             };
 
             const onShowRewardCallback = (adId) => {
-                console.log('Showed ad: ', adId);
+                console.log(Showed ad: ', adId);
             };
 
             tadsReward = window.tads.init({
@@ -164,21 +179,6 @@
             if (onclickBannerDiv) {
                 onclickBannerDiv.style.display = "none";
             }
-        },
-
-        trackEventGA: function(eventName, paramName = null, paramValue = null) {
-        if (typeof window.gtag !== "function") {
-            console.warn("gtag is not defined");
-            return;
         }
-
-        if (paramName && paramValue) {
-            const params = {};
-            params[paramName] = paramValue;
-            window.gtag('event', eventName, params);
-        } else {
-            window.gtag('event', eventName);
-        }
-    }
     };
 })();
