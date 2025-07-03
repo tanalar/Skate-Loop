@@ -8,7 +8,6 @@
     let onclickBannerDiv = null;
 
     let richBannerDiv = null;
-    let richadsController = null;
 
     let tadsReward = null;
 
@@ -41,12 +40,10 @@
                 onclickBannerDiv.style.display = "none";
             }
 
-            richadsController = new TelegramAdsController();
-
-            richadsController.initialize({
+            window.TelegramAdsController = new TelegramAdsController();
+            window.TelegramAdsController.initialize({
                 pubId: "978045",
                 appId: "2700",
-                debug: true
             });
 
             richBannerDiv = document.getElementById('rich-banner-365397');
@@ -103,19 +100,19 @@
                     onError?.("Rewarded Adsgram not initialized");
                 }
             } else if (source === 1) {
-                // Tads
-                console.log("Tads Reward");
-                if (tadsReward) {
-                    tadsReward.loadAd()
-                        .then(() => {
-                            tadsReward.showAd();
-                            onSuccess?.(rewardData);
-                            trackEventGA("reward_shown", "source", "tads");
-                        })
-                        .catch((err) => {
-                            onError?.(err);
-                        });
+                // RichAds
+                console.log("RichAds Reward");
+                if (window.TelegramAdsController) {
+                    window.TelegramAdsController.triggerInterstitialVideo().then(() => {
+                        onSuccess?.(rewardData);
+                        trackEventGA("reward_shown", "source", "richads");
+                    }).catch((err) => {
+                        onError?.(err);
+                    });
+                } else {
+                    onError?.("TelegramAdsController not available");
                 }
+                
             } else if (source === 2) {
                 // Onclick
                 console.log("Onclick Reward");
@@ -130,17 +127,18 @@
                     onError?.("Onclick Rewarded not ready");
                 }
             } else if (source === 3) {
-                // RichAds
-                console.log("RichAds Reward");
-                if (richadsController) {
-                    richadsController.triggerInterstitialVideo().then(() => {
-                        onSuccess?.(rewardData);
-                        trackEventGA("reward_shown", "source", "richads");
-                    }).catch((err) => {
-                        onError?.(err);
-                    });
-                } else {
-                    onError?.("TelegramAdsController not available");
+                // Tads
+                console.log("Tads Reward");
+                if (tadsReward) {
+                    tadsReward.loadAd()
+                        .then(() => {
+                            tadsReward.showAd();
+                            onSuccess?.(rewardData);
+                            trackEventGA("reward_shown", "source", "tads");
+                        })
+                        .catch((err) => {
+                            onError?.(err);
+                        });
                 }
             }
 
