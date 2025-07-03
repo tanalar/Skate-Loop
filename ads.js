@@ -35,10 +35,15 @@
                     .catch(e => console.error("Onclick Rewarded init error:", e));
             }
 
-            onclickBannerDiv = document.querySelector('[data-banner="6079882"]');
-            if (onclickBannerDiv) {
-                onclickBannerDiv.style.display = "none";
-            }
+            //onclickBannerDiv = document.querySelector('[data-banner="6079882"]');
+            //if (onclickBannerDiv) {
+            //    onclickBannerDiv.style.display = "none";
+            //}
+
+            onclickBannerDiv = document.createElement("div");
+            onclickBannerDiv.setAttribute("data-banner", "6079882");
+            onclickBannerDiv.style.display = "none";
+            document.body.appendChild(onclickBannerDiv);
 
             window.TelegramAdsController = new TelegramAdsController();
             window.TelegramAdsController.initialize({
@@ -46,10 +51,18 @@
                 appId: "2700",
             });
 
-            richBannerDiv = document.getElementById('rich-banner-365397');
-            if (richBannerDiv) {
-                richBannerDiv.style.display = "none";
-            }
+            //richBannerDiv = document.getElementById('rich-banner-365397');
+            //if (richBannerDiv) {
+            //    richBannerDiv.style.display = "none";
+            //}
+            richBannerDiv = document.createElement("div");
+            richBannerDiv.setAttribute("id", "rich-banner-365397");
+            richBannerDiv.style.display = "none";
+            document.body.appendChild(richBannerDiv);
+
+            const tadsContainer = document.createElement("div");
+            tadsContainer.setAttribute("id", "tads-container-531");
+            document.body.appendChild(tadsContainer); 
 
             const adsNotFoundCallback = () => {
                 console.log('No ads found to show');
