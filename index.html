@@ -15,7 +15,7 @@
     <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
     <script src="https://w.tads.me/widget.js"></script>
 
-    <script src="ads.js" defer></script>
+    <script src="ads.js"></script>
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DB7PZ8NK73"></script>
@@ -149,14 +149,58 @@
             background-size: 200% 100%;
             animation: shimmer 1.2s infinite;
         }
+        .task {
+            --adsgram-task-font-size: 16px; 
+            --adsgram-task-icon-size: 50px;
+            --adsgram-task-icon-title-gap: 15px; 
+            --adsgram-task-button-width: 60px; 
+            --adsgram-task-icon-border-radius: 8px;
+            display: block;
+            width: 328px;
+            padding: 8px 16px 8px 8px;
+            border-radius: 16px;
+            background-color: #1d2733;
+            font-family: Roboto;
+            color: white;
+        }
+
+        .task__reward {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+        }
+
+        .task__button {
+            margin-left: 10px;
+            background-color: #50a8eb;
+            border-radius: 5px;
+            padding: 6px 12px;
+        }
+
+        .task__button_claim {
+            margin-left: 0;
+            background-color: #ee941c;
+        }
+
+        .task__button_done {
+            margin-left: 0;
+            background-color: #007539;
+        }
+
     </style>
 </head>
 <body>
 
-    <div data-banner="6079882"></div>
-    <div id="tads-container-531"></div>
-
-    <div id="rich-banner-365397"></div>
+    <!--<div data-banner="6079882"></div>-->
+    <!--<div id="tads-container-531"></div>-->
+    <!--<div id="rich-banner-365397"></div>-->
+    <adsgram-task data-block-id='task-11829' data-debug='true' class='task'>
+        <p slot='reward' class='task__reward'>
+            <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:14px; height:14px; vertical-align:middle; border: none;" /> 5
+        </p>
+        <div slot='button' class='task__button'>Вперед</div>
+        <div slot='claim' class='task__button task__button_claim'>Получить</div>
+        <div slot='done' class='task__button task__button_done'>Готово</div>
+    </adsgram-task>
 
     <div id="loading-screen" style="
         position: fixed;
@@ -310,6 +354,34 @@
             meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
             document.head.appendChild(meta);
         }</script>
+
+    <script>
+        const task = document.querySelector(".task");
+        task.style.display = "none";
+        task.addEventListener("reward", (event) => {
+            window.unityInstance.SendMessage("WebAppHandler", "HandleTaskReward");
+        });
+
+        task.addEventListener("onError", (event) => {
+            
+        });
+
+        task.addEventListener("onBannerNotFound", (event) => {
+            
+        });
+
+        task.addEventListener("onTooLongSession", (event) => {
+            
+        });
+
+        window.showTasks = function () {
+            task.style.display = "block";
+        };
+        window.hideTasks = function () {
+            task.style.display = "none";
+        };
+
+    </script>
 
     <script>window.showInterstitial = function () {
             window.AdsManager.showInterstitial(
