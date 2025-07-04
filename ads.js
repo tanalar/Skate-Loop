@@ -55,35 +55,37 @@
             //if (richBannerDiv) {
             //    richBannerDiv.style.display = "none";
             //}
-            richBannerDiv = document.createElement("div");
-            richBannerDiv.setAttribute("id", "rich-banner-365397");
-            richBannerDiv.style.display = "none";
-            document.body.appendChild(richBannerDiv);
 
-            const tadsContainer = document.createElement("div");
-            tadsContainer.setAttribute("id", "tads-container-531");
-            document.body.appendChild(tadsContainer); 
 
-            const adsNotFoundCallback = () => {
-                console.log('No ads found to show');
-            };
+            //richBannerDiv = document.createElement("div");
+            //richBannerDiv.setAttribute("id", "rich-banner-365397");
+            //richBannerDiv.style.display = "none";
+            //document.body.appendChild(richBannerDiv);
 
-            const onClickRewardCallback = (adId) => {
-                console.log('Clicked ad:', adId);
-            };
+            //const tadsContainer = document.createElement("div");
+            //tadsContainer.setAttribute("id", "tads-container-531");
+            //document.body.appendChild(tadsContainer); 
 
-            const onShowRewardCallback = (adId) => {
-                console.log('Showed ad: ', adId);
-            };
+            //const adsNotFoundCallback = () => {
+            //    console.log('No ads found to show');
+            //};
 
-            tadsReward = window.tads.init({
-                widgetId: 531,
-                type: 'static',
-                debug: false,
-                onShowReward: onShowRewardCallback,
-                onClickReward: onClickRewardCallback,
-                onAdsNotFound: adsNotFoundCallback
-            });
+            //const onClickRewardCallback = (adId) => {
+            //    console.log('Clicked ad:', adId);
+            //};
+
+            //const onShowRewardCallback = (adId) => {
+            //    console.log('Showed ad: ', adId);
+            //};
+
+            //tadsReward = window.tads.init({
+            //    widgetId: 531,
+            //    type: 'static',
+            //    debug: false,
+            //    onShowReward: onShowRewardCallback,
+            //    onClickReward: onClickRewardCallback,
+            //    onAdsNotFound: adsNotFoundCallback
+            //});
         },
 
         showInterstitial: function (onClose, onError) {
@@ -97,7 +99,7 @@
         },
 
         showReward: function (rewardData, onSuccess, onError) {
-            const source = rewardedToggle % 4;
+            const source = rewardedToggle % 2;
 
             if (source === 0) {
                 // Adsgram
@@ -113,20 +115,6 @@
                     onError?.("Rewarded Adsgram not initialized");
                 }
             } else if (source === 1) {
-                // RichAds
-                console.log("RichAds Reward");
-                if (window.TelegramAdsController) {
-                    window.TelegramAdsController.triggerInterstitialVideo().then(() => {
-                        onSuccess?.(rewardData);
-                        trackEventGA("reward_shown", "source", "richads");
-                    }).catch((err) => {
-                        onError?.(err);
-                    });
-                } else {
-                    onError?.("TelegramAdsController not available");
-                }
-                
-            } else if (source === 2) {
                 // Onclick
                 console.log("Onclick Reward");
                 if (onclickRewardedInitialized && onclickRewardedShow) {
@@ -139,7 +127,8 @@
                 } else {
                     onError?.("Onclick Rewarded not ready");
                 }
-            } else if (source === 3) {
+            }
+            else if (source === 2) {
                 // Tads
                 console.log("Tads Reward");
                 if (tadsReward) {
@@ -153,7 +142,21 @@
                             onError?.(err);
                         });
                 }
-            }
+            } else if (source === 3) {
+                // RichAds
+                console.log("RichAds Reward");
+                if (window.TelegramAdsController) {
+                    window.TelegramAdsController.triggerInterstitialVideo().then(() => {
+                        onSuccess?.(rewardData);
+                        trackEventGA("reward_shown", "source", "richads");
+                    }).catch((err) => {
+                        onError?.(err);
+                    });
+                } else {
+                    onError?.("TelegramAdsController not available");
+                }
+
+            }  
 
             rewardedToggle++;
         },
@@ -164,18 +167,18 @@
                 onclickBannerDiv = document.querySelector('[data-banner="6079882"]');
             }
 
-            if (!richBannerDiv) {
-                richBannerDiv = document.getElementById('rich-banner-365397');
-            }
+            //if (!richBannerDiv) {
+            //    richBannerDiv = document.getElementById('rich-banner-365397');
+            //}
 
             if (bannerToggle % 2 === 0) {
                 console.log("RichAds Banner");
-                if (richBannerDiv) richBannerDiv.style.display = "block";
-                if (onclickBannerDiv) onclickBannerDiv.style.display = "none";
+                //if (richBannerDiv) richBannerDiv.style.display = "block";
+                if (onclickBannerDiv) onclickBannerDiv.style.display = "block";
             } else {
                 console.log("OnClick Banner");
                 if (onclickBannerDiv) onclickBannerDiv.style.display = "block";
-                if (richBannerDiv) richBannerDiv.style.display = "none";
+                //if (richBannerDiv) richBannerDiv.style.display = "none";
             }
             bannerToggle++;
         },
