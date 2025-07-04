@@ -280,8 +280,8 @@
         <img id="user-avatar" style="width: 45px; height: 45px; border-radius: 10px; border: 2px solid rgba(255, 255, 255, 0);"> <!-- border: 2px solid white;-->
     </div>
 
-    <iframe id="leaderboard-frame" src="leaderboard.html" allow="cross-origin-isolated"></iframe>
-    <iframe id="referral-frame" src="referrals.html" allow="cross-origin-isolated"></iframe>
+    <iframe id="leaderboard-frame" src="leaderboard.html"></iframe>
+    <iframe id="referral-frame" src="referrals.html"></iframe>
 
     <script>window.showLeaderboard = function () {
             const frame = document.getElementById('leaderboard-frame');
@@ -358,22 +358,21 @@
 
     <script>
         const task = document.querySelector(".task");
-       
         task.addEventListener("reward", (event) => {
             window.unityInstance.SendMessage("WebAppHandler", "HandleTaskReward");
-            alert("Получена награда 5 звезд");
+            alert(`Reward in block ${event.detail}`);
         });
 
         task.addEventListener("onError", (event) => {
-            alert("Ошибка получения задания");
+            alert(`Error during loading or render for block ${event.detail}`);
         });
 
         task.addEventListener("onBannerNotFound", (event) => {
-            alert("Баннер задания не найден");
+            alert(`Can't found banner for block ${event.detail}`);
         });
 
         task.addEventListener("onTooLongSession", (event) => {
-            alert("Сессия для задания завершилась");
+            alert('The session is too long. Please restart the app to get ads');
         });
 
         window.showTasks = function () {
