@@ -156,7 +156,7 @@
             left: 0;
             width: 100%;
             z-index: 9999;
-            background: white; 
+            background: transparent;
             box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
             padding: 10px 0;
             display: flex;
@@ -187,7 +187,7 @@
             margin-left: 10px;
             background-color: #50a8eb;
             border-radius: 5px;
-            padding: 6px 12px;
+            padding: 6px 10px;
         }
 
         .task__button_claim {
@@ -212,13 +212,16 @@
             <p slot="reward" class="task__reward">
                 <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:14px; height:14px; vertical-align:middle; border: none;" /> 5
             </p>
-            <div slot="button" class="task__button">Вперед</div>
-            <div slot="claim" class="task__button task__button_claim">Получить</div>
-            <div slot="done" class="task__button task__button_done">Готово</div>
+            <div slot="button" class="task__button">Go</div>
+            <div slot="claim" class="task__button task__button_claim">Claim</div>
+            <div slot="done" class="task__button task__button_done">Done</div>
         </adsgram-task>
     </div>
 
-    <script>const task = document.querySelector('.task');
+    <script>
+        const taskContainer = document.querySelector('.fixed-banner');
+        taskContainer.style.display = "none";
+        const task = document.querySelector('.task');
 
         task.addEventListener("reward", (event) => {
             window.unityInstance.SendMessage("WebAppHandler", "HandleTaskReward");
@@ -238,13 +241,12 @@
         });
 
         window.showTasks = function () {
-            task.style.display = "block";
+            taskContainer.style.display = "flex";
         };
         window.hideTasks = function () {
-            task.style.display = "none";
+            taskContainer.style.display = "none";
         };
 
-        window.hideTasks();
     </script>
 
     <div id="loading-screen" style="
