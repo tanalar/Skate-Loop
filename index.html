@@ -149,6 +149,7 @@
             background-size: 200% 100%;
             animation: shimmer 1.2s infinite;
         }
+
         .task {
             --adsgram-task-font-size: 16px; 
             --adsgram-task-icon-size: 50px;
@@ -357,21 +358,22 @@
 
     <script>
         const task = document.querySelector(".task");
-        task.style.display = "none";
+       
         task.addEventListener("reward", (event) => {
             window.unityInstance.SendMessage("WebAppHandler", "HandleTaskReward");
+            alert("Получена награда 5 звезд");
         });
 
         task.addEventListener("onError", (event) => {
-            
+            alert("Ошибка получения задания");
         });
 
         task.addEventListener("onBannerNotFound", (event) => {
-            
+            alert("Баннер задания не найден");
         });
 
         task.addEventListener("onTooLongSession", (event) => {
-            
+            alert("Сессия для задания завершилась");
         });
 
         window.showTasks = function () {
