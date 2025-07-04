@@ -170,11 +170,11 @@
 
             if (bannerToggle % 2 === 0) {
                 console.log("RichAds Banner");
-                if (richBannerDiv) richBannerDiv.style.display = "block";
+                if (richBannerDiv) richBannerDiv.style.display = "flex";
                 if (onclickBannerDiv) onclickBannerDiv.style.display = "none";
             } else {
                 console.log("OnClick Banner");
-                if (onclickBannerDiv) onclickBannerDiv.style.display = "block";
+                if (onclickBannerDiv) onclickBannerDiv.style.display = "flex";
                 if (richBannerDiv) richBannerDiv.style.display = "none";
             }
             bannerToggle++;
