@@ -116,7 +116,7 @@
                 // RichAds
                 console.log("RichAds Reward");
                 if (window.TelegramAdsController) {
-                    window.TelegramAdsController.triggerInterstitialVideo().then(() => {
+                    window.TelegramAdsController.triggerInterstitialVideo().then((result) => {
                         onSuccess?.(rewardData);
                         trackEventGA("reward_shown", "source", "richads");
                     }).catch((err) => {
@@ -170,11 +170,11 @@
 
             if (bannerToggle % 2 === 0) {
                 console.log("RichAds Banner");
-                if (richBannerDiv) richBannerDiv.style.display = "flex";
+                if (richBannerDiv) richBannerDiv.style.display = "block";
                 if (onclickBannerDiv) onclickBannerDiv.style.display = "none";
             } else {
                 console.log("OnClick Banner");
-                if (onclickBannerDiv) onclickBannerDiv.style.display = "flex";
+                if (onclickBannerDiv) onclickBannerDiv.style.display = "block";
                 if (richBannerDiv) richBannerDiv.style.display = "none";
             }
             bannerToggle++;
