@@ -65,23 +65,6 @@
                     onError?.("Rewarded Adsgram not initialized");
                 }
             } else if (source === 1) {
-<<<<<<< HEAD
-=======
-                // RichAds
-                console.log("RichAds Reward");
-                if (window.TelegramAdsController) {
-                    window.TelegramAdsController.triggerInterstitialVideo().then((result) => {
-                        onSuccess?.(rewardData);
-                        trackEventGA("reward_shown", "source", "richads");
-                    }).catch((err) => {
-                        onError?.(err);
-                    });
-                } else {
-                    onError?.("TelegramAdsController not available");
-                }
-                
-            } else if (source === 2) {
->>>>>>> aafd814be13b637e961d8db3eafd006d17daf316
                 // Onclick
                 console.log("Onclick Reward");
                 if (onclickRewardedInitialized && onclickRewardedShow) {
