@@ -12,9 +12,6 @@
     <script src="https://js.onclckvd.com/in-stream-ad-admanager/tma.js"></script>
     <script async data-onclicka-banner="343843" src="https://js.onclckmn.com/banner/oncbanner.m.js" data-onclicka-banner-ar="c"></script>
 
-    <script src="https://richinfo.co/richpartners/telegram/js/tg-ob.js"></script>
-    <script src="https://w.tads.me/widget.js"></script>
-
     <script src="ads.js"></script>
 
     <!-- Google Analytics -->
@@ -149,11 +146,37 @@
             background-size: 200% 100%;
             animation: shimmer 1.2s infinite;
         }
+
+        .fixed-banner {
+            position: fixed;
+            top: 150px; /* Отступ сверху */
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            background: transparent;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .onclick-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            background: transparent;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
         .task {
-            --adsgram-task-font-size: 16px; 
+            --adsgram-task-font-size: 16px;
             --adsgram-task-icon-size: 50px;
-            --adsgram-task-icon-title-gap: 15px; 
-            --adsgram-task-button-width: 60px; 
+            --adsgram-task-icon-title-gap: 15px;
+            --adsgram-task-button-width: 60px;
             --adsgram-task-icon-border-radius: 8px;
             display: block;
             width: 328px;
@@ -173,7 +196,7 @@
             margin-left: 10px;
             background-color: #50a8eb;
             border-radius: 5px;
-            padding: 6px 12px;
+            padding: 6px 10px;
         }
 
         .task__button_claim {
@@ -185,22 +208,46 @@
             margin-left: 0;
             background-color: #007539;
         }
-
     </style>
 </head>
 <body>
+    <div class="fixed-banner">
+        <adsgram-task data-block-id="task-11829" data-debug="false" class="task">
+            <p slot="reward" class="task__reward">
+                <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:14px; height:14px; vertical-align:middle; border: none;" /> 25
+            </p>
+            <div slot="button" class="task__button">Go</div>
+            <div slot="claim" class="task__button task__button_claim">Claim</div>
+            <div slot="done" class="task__button task__button_done">Done</div>
+        </adsgram-task>
+    </div>
 
-    <!--<div data-banner="6079882"></div>-->
-    <!--<div id="tads-container-531"></div>-->
-    <!--<div id="rich-banner-365397"></div>-->
-    <adsgram-task data-block-id='task-11829' data-debug='false' class='task'>
-        <p slot='reward' class='task__reward'>
-            <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:14px; height:14px; vertical-align:middle; border: none;" /> 5
-        </p>
-        <div slot='button' class='task__button'>Вперед</div>
-        <div slot='claim' class='task__button task__button_claim'>Получить</div>
-        <div slot='done' class='task__button task__button_done'>Готово</div>
-    </adsgram-task>
+    <script>const taskContainer = document.querySelector('.fixed-banner');
+        taskContainer.style.display = "none";
+        const task = document.querySelector('.task');
+
+        task.addEventListener("reward", (event) => {
+            window.unityInstance.SendMessage("WebAppHandler", "HandleTaskReward");
+        });
+
+        task.addEventListener("onError", (event) => {
+            
+        });
+
+        task.addEventListener("onBannerNotFound", (event) => {
+           
+        });
+
+        task.addEventListener("onTooLongSession", (event) => {
+           
+        });
+
+        window.showTasks = function () {
+            taskContainer.style.display = "flex";
+        };
+        window.hideTasks = function () {
+            taskContainer.style.display = "none";
+        };</script>
 
     <div id="loading-screen" style="
         position: fixed;
@@ -235,7 +282,7 @@
                 <div class="rule-icon"></div>
                 <div class="rule-text">
                     <div>
-                        Набери 12
+                        Набери 10
                         <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:16px; height:16px; vertical-align:middle; margin-bottom: 3px;" />
                         за игру и получи 0,3
                         <img src="https://i.ibb.co/8LV6Nr5Y/ton-symbol.png" style="width:17px; height:17px; vertical-align:middle; margin-bottom: 3px;" />
@@ -279,8 +326,8 @@
         <img id="user-avatar" style="width: 45px; height: 45px; border-radius: 10px; border: 2px solid rgba(255, 255, 255, 0);"> <!-- border: 2px solid white;-->
     </div>
 
-    <iframe id="leaderboard-frame" src="leaderboard.html" allow="cross-origin-isolated"></iframe>
-    <iframe id="referral-frame" src="referrals.html" allow="cross-origin-isolated"></iframe>
+    <iframe id="leaderboard-frame" src="leaderboard.html"></iframe>
+    <iframe id="referral-frame" src="referrals.html"></iframe>
 
     <script>window.showLeaderboard = function () {
             const frame = document.getElementById('leaderboard-frame');
@@ -354,34 +401,6 @@
             meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
             document.head.appendChild(meta);
         }</script>
-
-    <script>
-        const task = document.querySelector(".task");
-        task.style.display = "none";
-        task.addEventListener("reward", (event) => {
-            window.unityInstance.SendMessage("WebAppHandler", "HandleTaskReward");
-        });
-
-        task.addEventListener("onError", (event) => {
-            
-        });
-
-        task.addEventListener("onBannerNotFound", (event) => {
-            
-        });
-
-        task.addEventListener("onTooLongSession", (event) => {
-            
-        });
-
-        window.showTasks = function () {
-            task.style.display = "block";
-        };
-        window.hideTasks = function () {
-            task.style.display = "none";
-        };
-
-    </script>
 
     <script>window.showInterstitial = function () {
             window.AdsManager.showInterstitial(
