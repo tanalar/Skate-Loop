@@ -149,6 +149,20 @@
 
         .fixed-banner {
             position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            background: transparent;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+<<<<<<< HEAD
+        .fixed-banner {
+            position: fixed;
             top: 150px; /* Отступ сверху */
             left: 0;
             width: 100%;
@@ -172,6 +186,8 @@
             justify-content: center;
         }
 
+=======
+>>>>>>> aafd814be13b637e961d8db3eafd006d17daf316
         .task {
             --adsgram-task-font-size: 16px;
             --adsgram-task-icon-size: 50px;
@@ -222,12 +238,32 @@
         </adsgram-task>
     </div>
 
+<<<<<<< HEAD
     <script>const taskContainer = document.querySelector('.fixed-banner');
+=======
+    <!--<div data-banner="6079882"></div>-->
+    <!--<div id="tads-container-531"></div>-->
+    <!--<div id="rich-banner-365397"></div>-->
+    <div class="fixed-banner">
+        <adsgram-task data-block-id="task-11829" data-debug="false" class="task">
+            <p slot="reward" class="task__reward">
+                <img src="https://img.icons8.com/?size=100&id=10159&format=png&color=7950F2" style="width:14px; height:14px; vertical-align:middle; border: none;" /> 5
+            </p>
+            <div slot="button" class="task__button">Go</div>
+            <div slot="claim" class="task__button task__button_claim">Claim</div>
+            <div slot="done" class="task__button task__button_done">Done</div>
+        </adsgram-task>
+    </div>
+
+    <script>
+        const taskContainer = document.querySelector('.fixed-banner');
+>>>>>>> aafd814be13b637e961d8db3eafd006d17daf316
         taskContainer.style.display = "none";
         const task = document.querySelector('.task');
 
         task.addEventListener("reward", (event) => {
             window.unityInstance.SendMessage("WebAppHandler", "HandleTaskReward");
+<<<<<<< HEAD
         });
 
         task.addEventListener("onError", (event) => {
@@ -240,6 +276,21 @@
 
         task.addEventListener("onTooLongSession", (event) => {
            
+=======
+            alert(`Reward in block ${event.detail}`);
+        });
+
+        task.addEventListener("onError", (event) => {
+            alert(`Error during loading or render for block ${event.detail}`);
+        });
+
+        task.addEventListener("onBannerNotFound", (event) => {
+            alert(`Can't found banner for block ${event.detail}`);
+        });
+
+        task.addEventListener("onTooLongSession", (event) => {
+            alert('The session is too long. Please restart the app to get ads');
+>>>>>>> aafd814be13b637e961d8db3eafd006d17daf316
         });
 
         window.showTasks = function () {
@@ -247,7 +298,13 @@
         };
         window.hideTasks = function () {
             taskContainer.style.display = "none";
+<<<<<<< HEAD
         };</script>
+=======
+        };
+
+    </script>
+>>>>>>> aafd814be13b637e961d8db3eafd006d17daf316
 
     <div id="loading-screen" style="
         position: fixed;
