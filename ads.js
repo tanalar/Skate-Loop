@@ -7,8 +7,10 @@
     let onclickRewardedShow = null;
     let onclickBannerDiv = null;
 
+    let richBannerDiv = null;
 
     let rewardedToggle = 0;
+    let bannerToggle = 0;
 
     window.AdsManager = {
         initialize: function (unity, adsgram) {
@@ -35,6 +37,17 @@
             onclickBannerDiv.classList.add("onclick-banner");
             onclickBannerDiv.style.display = "none";
             document.body.appendChild(onclickBannerDiv);
+
+            window.TelegramAdsController = new TelegramAdsController();
+            window.TelegramAdsController.initialize({
+                pubId: "978045",
+                appId: "2700",
+            });
+
+            richBannerDiv = document.createElement("div");
+            richBannerDiv.setAttribute("id", "rich-banner-365397");
+            richBannerDiv.style.display = "none";
+            document.body.appendChild(richBannerDiv);
     
         },
 
@@ -88,10 +101,26 @@
                 onclickBannerDiv = document.querySelector('[data-banner="6079882"]');
             }
 
-            if (onclickBannerDiv) onclickBannerDiv.style.display = "flex";
+            if (!richBannerDiv) {
+                richBannerDiv = document.getElementById('rich-banner-365397');
+            }
+
+            if (bannerToggle % 2 === 0) {
+                console.log("RichAds Banner");
+                if (richBannerDiv) richBannerDiv.style.display = "block";
+                if (onclickBannerDiv) onclickBannerDiv.style.display = "none";
+            } else {
+                console.log("OnClick Banner");
+                if (onclickBannerDiv) onclickBannerDiv.style.display = "block";
+                if (richBannerDiv) richBannerDiv.style.display = "none";
+            }
+            bannerToggle++;
         },
 
         hideBanner: function () {
+            if (richBannerDiv) {
+                richBannerDiv.style.display = "none";
+            }
             if (onclickBannerDiv) {
                 onclickBannerDiv.style.display = "none";
             }
